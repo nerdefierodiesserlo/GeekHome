@@ -1,0 +1,24 @@
+  thermostat_mansarda_hours:
+    name: Ore
+    initial: 03
+    min: 00
+    max: 03
+    step: 1
+  thermostat_mansarda_minutes:
+    name: Minuti
+    initial: 00
+    min: 00
+    max: 60
+    step: 10
+  thermostat_primo_piano_hours:
+    name: Ore
+    initial: 03
+    min: 00
+    max: 03
+    step: 1
+  thermostat_primo_piano_minutes:
+    name: Minuti
+    initial: 00
+    min: 00
+    max: 60
+    step: 10

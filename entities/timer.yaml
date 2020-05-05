@@ -1,0 +1,6 @@
+  timer_termosifoni_mansarda:
+    name: Spegnimento tra
+    duration: '01:30:00'
+  timer_termosifoni_primo_piano:
+    name: Spegnimento tra
+    duration: '01:30:00'

@@ -1,0 +1,258 @@
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+    scan_interval: '30'
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_use_percent
+      - type: memory_free
+      - type: memory_use
+      - type: processor_use
+#   - platform: rest
+#     resource: 'http://192.168.1.139:1234/hassio/get_test_status3'
+#     name: test_status_rest
+#     json_attributes:
+#       - name
+#       - percent
+#       - avail
+#     scan_interval: 43200
+#     value_template: '{{ value_json.name }}'
+#     # unit_of_measurement: '%'
+#   - platform: rest
+#     resource: 'http://192.168.1.139:1234/hassio/get_test_status2'
+#     name: test_status_rest2
+#     scan_interval: 60
+  - platform: rest
+    resource: 'http://192.168.1.14:1234/hassio/smb/get_smb_status'
+    name: smb_status_rest
+    scan_interval: 3600
+  - platform: rest
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd_stats'
+    name: wd_rest
+    json_attributes:
+      - name
+      - state
+      - percent
+      - avail
+      - size
+      - used
+    scan_interval: 43200
+    value_template: '{{ value_json.name }}'
+  - platform: rest
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_toshiba_stats'
+    name: toshiba_rest
+    json_attributes:
+      - name
+      - state
+      - percent
+      - avail
+      - size
+      - used
+    scan_interval: 43200
+    value_template: '{{ value_json.name }}'
+  - platform: rest
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_hitachi_stats'
+    name: hitachi_rest
+    json_attributes:
+      - name
+      - state
+      - percent
+      - avail
+      - size
+      - used
+    scan_interval: 43200
+    value_template: '{{ value_json.name }}'
+  - platform: rest
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd2_stats'
+    name: wd2_rest
+    json_attributes:
+      - name
+      - state
+      - percent
+      - avail
+      - size
+      - used
+    scan_interval: 43200
+    value_template: '{{ value_json.name }}'
+################################################################################
+  - platform: darksky
+    api_key: !secret dark_sky_api
+    latitude: !secret latitude_home
+    longitude: !secret longitude_home
+    language: it
+    scan_interval:
+      minutes: 30
+    monitored_conditions:
+      - daily_summary
+      - dew_point
+      - hourly_summary
+      - humidity
+      - ozone
+      - pressure
+      - summary
+      - temperature
+      - temperature_high
+      - temperature_low
+      - wind_bearing
+      - wind_speed
+      
+  - platform: template
+    sensors:
+      climate_primo_piano_state:
+        friendly_name: 'Stato termostato primo piano'
+        value_template: "{{ state_attr('climate.termostato_primo_piano', 'hvac_action') }}"
+      temperatura_mansarda:
+        friendly_name: 'Temperatura mansarda'
+        value_template: "{{ state_attr('climate.termostato_mansarda', 'current_temperature') }}"
+      temperatura_primo_piano:
+        friendly_name: 'Temperatura cucina'
+        value_template: "{{ state_attr('climate.termostato_primo_piano', 'current_temperature') }}"
+      thermostat_mansarda_timer:
+        friendly_name: 'Timer'
+        value_template: "{{ states('input_number.thermostat_mansarda_hours') | int  }}:{{ states('input_number.thermostat_mansarda_minutes') | int  }}:00"
+      thermostat_primo_piano_timer:
+        friendly_name: 'Timer'
+        value_template: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
+      last_alexa:
+        entity_id:
+          - media_player.echo_dot_di_patrizia
+          - media_player.echo_dot_di_umberto
+        value_template: >
+          {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+#################################################################################################
+      wd_usage_percent:
+        friendly_name: "WD usage percent"
+        entity_id: sensor.wd_rest
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('sensor.wd_rest', 'percent') }}"
+      wd_avail_space:
+        friendly_name: "WD avail space"
+        entity_id: sensor.wd_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd_rest', 'avail') }}"
+      wd_size:
+        friendly_name: "wd size"
+        entity_id: sensor.wd_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd_rest', 'size') }}"
+      wd_used:
+        friendly_name: "wd used"
+        entity_id: sensor.wd_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd_rest', 'used') }}"
+      wd_state:
+        friendly_name: "wd state"
+        entity_id: sensor.wd_rest
+        value_template: "{{ state_attr('sensor.wd_rest', 'state') }}"
+        icon_template: >
+          {% if is_state_attr('sensor.wd_rest', 'state', 'Non montato') %}
+            mdi:harddisk-remove
+          {% else %}
+            mdi:harddisk-plus
+          {% endif %}
+#################################################################################################
+      toshiba_usage_percent:
+        friendly_name: "Toshiba usage percent"
+        entity_id: sensor.toshiba_rest
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('sensor.toshiba_rest', 'percent') }}"
+      toshiba_avail_space:
+        friendly_name: "Toshiba avail space"
+        entity_id: sensor.toshiba_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.toshiba_rest', 'avail') }}"
+      toshiba_size:
+        friendly_name: "toshiba size"
+        entity_id: sensor.toshiba_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.toshiba_rest', 'size') }}"
+      toshiba_used:
+        friendly_name: "toshiba used"
+        entity_id: sensor.toshiba_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.toshiba_rest', 'used') }}"
+      toshiba_state:
+        friendly_name: "toshiba state"
+        entity_id: sensor.toshiba_rest
+        value_template: "{{ state_attr('sensor.toshiba_rest', 'state') }}"
+        icon_template: >
+          {% if is_state_attr('sensor.toshiba_rest', 'state', 'Non montato') %}
+            mdi:harddisk-remove
+          {% else %}
+            mdi:harddisk-plus
+          {% endif %}
+#################################################################################################
+      hitachi_usage_percent:
+        friendly_name: "Hitachi usage percent"
+        entity_id: sensor.hitachi_rest
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('sensor.hitachi_rest', 'percent') }}"
+      hitachi_avail_space:
+        friendly_name: "Hitachi avail space"
+        entity_id: sensor.hitachi_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.hitachi_rest', 'avail') }}"
+      hitachi_size:
+        friendly_name: "hitachi size"
+        entity_id: sensor.hitachi_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.hitachi_rest', 'size') }}"
+      hitachi_used:
+        friendly_name: "hitachi used"
+        entity_id: sensor.hitachi_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.hitachi_rest', 'used') }}"
+      hitachi_state:
+        friendly_name: "hitachi state"
+        entity_id: sensor.hitachi_rest
+        value_template: "{{ state_attr('sensor.hitachi_rest', 'state') }}"
+        icon_template: >
+          {% if is_state_attr('sensor.hitachi_rest', 'state', 'Non montato') %}
+            mdi:harddisk-remove
+          {% else %}
+            mdi:harddisk-plus
+          {% endif %}
+#################################################################################################
+      wd2_usage_percent:
+        friendly_name: "WD2 avail space"
+        entity_id: sensor.wd2_rest
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('sensor.wd2_rest', 'percent') }}"
+      wd2_avail_space:
+        friendly_name: "WD2 avail space"
+        entity_id: sensor.wd2_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd2_rest', 'avail') }}"
+      wd2_size:
+        friendly_name: "WD2 size"
+        entity_id: sensor.wd2_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd2_rest', 'size') }}"
+      wd2_used:
+        friendly_name: "WD2 used"
+        entity_id: sensor.wd2_rest
+        unit_of_measurement: 'GB'
+        value_template: "{{ state_attr('sensor.wd2_rest', 'used') }}"
+      wd2_state:
+        friendly_name: "wd2 state"
+        entity_id: sensor.wd2_rest
+        value_template: "{{ state_attr('sensor.wd2_rest', 'state') }}"
+        icon_template: >
+          {% if is_state_attr('sensor.wd2_rest', 'state', 'Non montato') %}
+            mdi:harddisk-remove
+          {% else %}
+            mdi:harddisk-plus
+          {% endif %}

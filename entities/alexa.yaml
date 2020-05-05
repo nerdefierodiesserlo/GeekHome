@@ -1,0 +1,85 @@
+  smart_home:
+    filter:
+      include_domains:
+        - switch
+        - light
+        - climate
+        - sensor
+        - script
+        - input_boolean
+      exclude_entities:
+        - input_boolean.server
+        - input_boolean.reboot_button
+        - input_boolean.stop_button
+        - input_boolean.pc_desktop
+        - input_boolean.pc_laptop
+        - input_boolean.manual_backup
+        - input_boolean.reboot_in_windows
+        - input_boolean.smartphne_tts
+        - input_boolean.boolean_di_prova
+        - input_boolean.boolean_di_prova2
+        - input_boolean.gdrive_backup
+        - input_boolean.gdrive_sync_completed
+        - input_boolean.zigbee_permit_join
+        - input_boolean.repack_db
+        - input_boolean.alexa_check_server_state
+        - sensor.dark_sky_dew_point
+        - light.aqara_hub_5a55
+        - switch.computer_lan_wol
+        - switch.computer_wifi_wol
+        - switch.laptop_wol
+        - switch.pi_zero_wol
+        - switch.shelly_shsw_1_55dfe4
+        - switch.shelly_shsw_1_76887f
+        - switch.shelly_shsw_1_76f7d1
+        - switch.shelly_shsw_1_7703e4
+        - media_player.echo_dot_di_patrizia
+        - script.increase_brightness_check
+        - script.increase_brightness
+        - script.turn_on_to_increase
+        - script.decrease_brightness_check
+        - script.decrease_brightness
+        - script.turn_on_to_decrease
+        - script.turn_on_light_camera_script
+        - script.turn_off_light_camera_script
+        - script.turn_on_light_scale_script
+        - script.turn_off_light_scale_script
+        - script.turn_on_light_bagno_script
+        - script.turn_off_light_bagno_script
+        - script.going_to_bed_script
+        - script.sto_uscendo
+        - script.sto_scendendo
+        - script.turn_on_riscaldamenti_script
+        - script.turn_off_riscaldamenti_script
+        - script.change_timer_termosifoni_mansarda
+        - script.update_timer_mansarda
+        - script.turn_on_riscaldamenti_primo_piano_script
+        - script.turn_off_riscaldamenti_primo_piano_script
+        - script.change_timer_termosifoni_primo_piano
+        - script.update_timer_primo_piano
+        - script.alexa_riscaldamenti_tts_script
+        - script.alexa_temperatura_raggiunta_tts_script
+        - script.update_mappa_zigbee
+        - script.zigbee_remove
+        - script.poweroff_server_script
+        - script.do_not_poweroff_server_script
+        
+    entity_config:
+      light.divano:
+        name: Luce divano
+      light.shelly_shsw_1_55dfe4:
+        name: Luce camera
+        description: Luce mansarda
+      light.shelly_shsw_1_7703E4:
+        name: Luce bagno
+        description: Luce bagno mansarda
+      light.shelly_shsw_1_76F7D1:
+        name: Luce scale
+        description: Luce scale
+      climate.termostato_mansarda:
+        name: Termostato mansarda
+        description: Termostato mansarda
+      climate.termostato_primo_piano:
+        name: Termostato cucina
+        description: Termostato cucina
+    

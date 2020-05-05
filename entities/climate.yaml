@@ -1,0 +1,24 @@
+#   - platform: generic_thermostat
+#     name: Termostato Umberto
+#     heater: switch.shelly_shsw_1_76887f  #termostato
+#     target_sensor: sensor.temperature_and_humidity_sensor_6d4d_temperature
+#     min_temp: 15
+#     max_temp: 21
+#     ac_mode: false
+#     target_temp: 20.0
+#     cold_tolerance: 0.3
+#     min_cycle_duration:
+#       seconds: 5
+#     keep_alive:
+#       minutes: 3
+#     initial_hvac_mode: "off"
+  - platform: floureon
+    name: Termostato primo piano
+    mac: "24:df:a7:13:c7:5b"
+    host: 192.168.1.149
+    use_external_temp: false
+  - platform: floureon
+    name: Termostato mansarda
+    mac: "24:df:a7:13:c8:89"
+    host: 192.168.1.150
+    use_external_temp: false

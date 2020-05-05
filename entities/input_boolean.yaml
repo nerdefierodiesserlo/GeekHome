@@ -1,0 +1,35 @@
+#   server:
+#     name: server
+  server_control_on_off:
+    name: Server on/off
+  reboot_button:
+    name: Reboot
+    initial: 'off'
+  stop_button:
+    name: Stop
+    initial: 'off'
+  pc_desktop:
+    name: Computer
+    initial: 'off'
+  pc_laptop:
+    name: Portatile
+    initial: 'off'
+  manual_backup:
+    name: Backup manuale
+    initial: 'off'
+  boolean_di_prova:
+    name: Boolean di prova
+    initial: 'off'
+  reboot_in_windows:
+    name: Passa a Windows
+    initial: 'off'
+  smartphne_tts:
+    name: TTS sul telefono
+    initial: 'off'
+    icon: mdi:text-to-speech
+  alexa_tts_on_off:
+    name: TTS Alexa
+    icon: mdi:text-to-speech
+  alexa_check_server_state:
+    name: Alexa check Server
+    icon: mdi:text-to-speech
