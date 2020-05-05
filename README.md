@@ -1,3 +1,3 @@
-# myhassio
+# Geek Home
 
 homepage
