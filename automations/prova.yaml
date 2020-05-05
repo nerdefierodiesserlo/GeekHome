@@ -1,0 +1,60 @@
+# - alias: ciao
+#   trigger:
+#     platform: state
+#     entity_id: switch.seconda_presa
+#     from: 'off'
+#     to: 'on'
+#   action:
+#     - service: timer.start
+#       data_template:
+#         entity_id: timer.timer2
+#         duration: "{{ states('input_number.hours') | int  }}:{{ states('input_number.minutes') | int  }}:{{ states('input_number.seconds') | int  }}"
+
+# - alias: ciao2
+#   trigger:
+#     - platform: event
+#       event_type: timer.finished
+#       event_data:
+#         entity_id: timer.timer2
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.seconda_presa
+
+# - alias: setta_secondi
+#   trigger:
+#     platform: state
+#     entity_id: input_number.seconds
+#   action:
+#     - service: timer.start
+#       data_template:
+#         entity_id: timer.timer2
+#         duration: "{{ states('input_number.hours') | int  }}:{{ states('input_number.minutes') | int  }}:{{ states('input_number.seconds') | int  }}"
+#     - service: timer.cancel
+#       data:
+#         entity_id: timer.timer2
+
+# - alias: setta_minuti
+#   trigger:
+#     platform: state
+#     entity_id: input_number.minutes
+#   action:
+#     - service: timer.cancel
+#       data_template:
+#         entity_id: timer.timer2
+#         duration: "{{ states('input_number.hours') | int  }}:{{ states('input_number.minutes') | int  }}:{{ states('input_number.seconds') | int  }}"
+#     - service: timer.cancel
+#       data:
+#         entity_id: timer.timer2
+        
+# - alias: setta_ore
+#   trigger:
+#     platform: state
+#     entity_id: input_number.hours
+#   action:
+#     - service: timer.start
+#       data_template:
+#         entity_id: timer.timer2
+#         duration: "{{ states('input_number.hours') | int  }}:{{ states('input_number.minutes') | int  }}:{{ states('input_number.seconds') | int  }}"
+#     - service: timer.cancel
+#      data:
+#        entity_id: timer.timer2

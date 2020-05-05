@@ -1,0 +1,117 @@
+turn_on_riscaldamenti_mansarda_script:
+  alias: Accendi riscaldamenti mansarda
+  sequence:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+turn_off_riscaldamenti_script:
+  alias: Spegni riscaldamenti mansarda
+  sequence:
+    - service: climate.turn_off
+      data:
+        entity_id: climate.termostato_mansarda
+change_timer_termosifoni_mansarda:
+  alias: Cambia timer riscaldamenti mansarda
+  sequence:
+    - service_template: >
+        {% if is_state('climate.termostato_mansarda', 'off') %}
+          script.turn_on_riscaldamenti_script
+        {% else %}
+          script.update_timer_mansarda
+        {% endif %}
+update_timer_mansarda:
+  alias: Aggiorna timer riscaldamenti mansarda
+  sequence:
+    - service: timer.start
+      data_template:
+        entity_id: timer.timer_termosifoni_mansarda
+        duration: "{{ states('input_number.thermostat_mansardao_hours') | int  }}:{{ states('input_number.thermostat_mansarda_minutes') | int  }}:00"
+        
+#####################################################################################################################################################
+
+turn_on_riscaldamenti_primo_piano_script:
+  alias: Accendi riscaldamenti primo piano
+  sequence:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_primo_piano
+turn_off_riscaldamenti_primo_piano_script:
+  alias: Spegni riscaldamenti primo piano
+  sequence:
+    - service: climate.turn_off
+      data:
+        entity_id: climate.termostato_primo_piano
+change_timer_termosifoni_primo_piano:
+  alias: Cambia timer riscaldamenti primo piano
+  sequence:
+    - service_template: >
+        {% if is_state('climate.termostato_primo_piano', 'off') %}
+          script.turn_on_riscaldamenti_primo_piano_script
+        {% else %}
+          script.update_timer_primo_piano
+        {% endif %}
+update_timer_primo_piano:
+  alias: Aggiorna timer riscaldamenti primo piano
+  sequence:
+    - service: timer.start
+      data_template:
+        entity_id: timer.timer_termosifoni_primo_piano
+        duration: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
+
+###########################################  TTS  #####################################################################################################
+
+alexa_riscaldamenti_tts_script:
+  alias: Alexa avvisa cambio stato riscaldamenti primo piano 
+  sequence:
+    - service: media_player.volume_set
+      entity_id: media_player.echo_dot_di_patrizia
+      data:
+        volume_level: '0.25'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: media_player.echo_dot_di_patrizia
+        message: >
+          {% if is_state('climate.termostato_primo_piano', 'off') %}
+            {{ [
+                  "Riscaldamenti spenti",
+                  "Non sia mai che superiamo i 10 gradi",
+                  "In effetti sto in maniche corte"
+                ] | random }}
+          {% else %}
+            {{ [
+                  "Riscaldamenti accesi",
+                  "Ci penso io a scaldare la casa",
+                  "Era l'ora, stavo morendo di freddo"
+                ] | random }}
+          {% endif %}
+        data:
+          type: "tts"
+
+alexa_temperatura_raggiunta_tts_script:
+  alias: Alexa avvisa temp raggiunta riscaldamenti primo piano 
+  sequence:
+    - service: media_player.volume_set
+      entity_id: media_player.echo_dot_di_patrizia
+      data:
+        volume_level: '0.25'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: media_player.echo_dot_di_patrizia
+        message: "Temperatura raggiunta, riscaldamenti in stand by"
+        data:
+          type: "tts"
+          
+telegram_riscaldamenti_primo_piano_script:
+  alias: Telegram avvisa cambio stato riscaldamenti primo piano
+  sequence:
+    - service: notify.notifiche_u
+      data_template:
+        title: '*Riscaldamenti*'
+        message: >
+          {% if is_state('climate.termostato_primo_piano', 'off') %}
+            "Riscaldamenti spenti"
+          {% else %}
+            "Riscaldamenti accesi"
+          {% endif %}

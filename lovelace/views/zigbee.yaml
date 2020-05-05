@@ -1,0 +1,38 @@
+####################################################
+#                                                  #
+#                  HOMEPAGE                        #
+#                                                  #
+####################################################
+  title: Zigbee
+  panel: true
+  path: zigbee
+  icon: mdi:zigbee
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      cards:
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          entities:
+          - entity: switch.zigbee2mqtt_main_join
+          - entity: timer.zigbee_permit_join
+          - entity: script.update_mappa_zigbee
+          - type: divider
+          - entity: sensor.bridge_state
+          - entity: sensor.zigbee2mqtt_version
+          - entity: sensor.coordinator_version
+          - entity: input_select.zigbee2mqtt_log_level
+          - type: divider
+          - entity: input_text.zigbee2mqtt_old_name
+          - entity: input_text.zigbee2mqtt_new_name
+          - entity: script.zigbee2mqtt_rename
+          - type: divider
+          - entity: input_text.zigbee2mqtt_remove
+          - entity: script.zigbee2mqtt_remove
+          - type: divider
+          - entity: input_text.zigbee2mqtt_update
+          - entity: script.zigbee2mqtt_update

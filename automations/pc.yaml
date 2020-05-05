@@ -1,0 +1,55 @@
+# - alias: when_pc_turn_on
+#   trigger:
+#     - platform: state
+#       entity_id: switch.computer_lan_wol
+#       from: 'off'
+#       to: 'on'
+#   action:
+#     - service: switch.turn_on
+#       data:
+#         entity_id: switch.scrivania
+# - alias: when_pc_turn_off
+#   trigger:
+#     - platform: state
+#       entity_id: switch.computer_lan_wol
+#       from: 'on'
+#       to: 'off'
+#   action:
+#     - service: switch.turn_off
+#       data:
+#         entity_id: switch.scrivania
+# ############################   PC POWEROFF   ###################################
+# - alias: turn_off_pc_desktop
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.pc_desktop
+#       from: 'off'
+#       to: 'on'
+#   action:
+#     - service: input_boolean.turn_off
+#       data:
+#         entity_id: input_boolean.pc_desktop
+#     - service: script.turn_off_pc_script
+# - alias: turn_off_pc_laptop
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.pc_laptop
+#       from: 'off'
+#       to: 'on'
+#   action:
+#     - service: script.turn_off_laptop_script
+#     - service: input_boolean.turn_off
+#       data:
+#         entity_id: input_boolean.pc_laptop
+############################   REBOOT UBUNTU   #################################
+- alias: reboot_in_windows
+  trigger:
+    - platform: state
+      entity_id: input_boolean.reboot_in_windows
+      from: 'off'
+      to: 'on'
+  action:
+    - service: script.reboot_pc_in_windows_script
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.reboot_in_windows

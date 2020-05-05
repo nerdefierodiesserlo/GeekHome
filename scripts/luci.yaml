@@ -1,0 +1,122 @@
+# increase_brightness_check:
+#   alias: Controllo aumento luminosità
+#   sequence:
+#     - service_template: >
+#         {% if is_state('light.comodino', 'on') %}
+#           script.increase_brightness
+#         {% else %}
+#           script.turn_on_to_increase
+#         {% endif %}
+# increase_brightness:
+#   alias: Aumenta luminosità
+#   sequence:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: light.comodino
+#         brightness: '{{states.light.comodino.attributes.brightness + 30}}'
+# turn_on_to_increase:
+#   alias: Accendi luce per incrementare
+#   sequence:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.comodino
+# decrease_brightness_check:
+#   alias: decrease_brightness_check
+#   sequence:
+#     - service_template: >
+#         {% if is_state('light.comodino', 'on') %}
+#           script.decrease_brightness
+#         {% else %}
+#           script.turn_on_to_decrease
+#         {% endif %}
+# decrease_brightness:
+#   alias: decrease_brightness
+#   sequence:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: light.comodino
+#         brightness: '{{states.light.comodino.attributes.brightness - 30}}'
+# turn_on_to_decrease:
+#   alias: turn_on_to_decrease
+#   sequence:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.comodino
+#############################   LUCI CAMERA   #########################################
+turn_on_light_camera_script:
+  alias: Accendi luce camera
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+turn_off_light_camera_script:
+  alias: Spegni luce camera
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+#############################   LUCI SCALE  #########################################
+turn_on_light_scale_script:
+  alias: Accendi luce scale
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale
+turn_off_light_scale_script:
+  alias: Spegni luce scale
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale
+#############################   LUCI BAGNO  #########################################
+turn_on_light_bagno_script:
+  alias: Accendi luce bagno
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id: light.shelly_shsw_1_7703e4  #luce bagno
+turn_off_light_bagno_script:
+  alias: Spegni luce bagno
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_7703e4  #luce bagno
+#############################   LUCI   #########################################
+going_to_bed_script:
+  alias: Vado a letto
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+    - service: light.turn_on
+      data:
+        entity_id: light.comodino
+sto_uscendo:
+  alias: Sto uscendo
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+    - service: light.turn_on
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale
+    - delay: '00:00:10'
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale
+    - service: group.turn_off
+      data:
+        entity_id: group.luci_camera_group
+sto_scendendo:
+  alias: Sto scendendo
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale
+    - delay: '00:00:10'
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_76f7d1  #luce scale

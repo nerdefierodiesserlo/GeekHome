@@ -1,0 +1,54 @@
+###########################   COMPUTER   #######################################
+turn_off_pc_script:
+  alias: spegni_computer
+  sequence:
+    - service_template: >
+        {% if is_state('switch.computer_lan_wol', 'on') %}
+          script.turn_off_pc_lan_script
+        {% else %}
+          {% if is_state('switch.computer_wifi_wol', 'on') %}
+            script.turn_off_pc_wifi_script
+          {% else %}
+            script.all_off_alert
+          {% endif %}
+        {% endif %}
+turn_off_pc_lan_script:
+  alias: turn_off_pc_lan_script
+  sequence:
+    - service: shell_command.ubuntu_lan_off
+    - service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: pc_desktop_account1_lan_off
+    - service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: pc_desktop_account2_lan_off
+turn_off_pc_wifi_script:
+  alias: turn_off_pc_wifi
+  sequence:
+    - service: shell_command.ubuntu_wifi_off
+    - service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: pc_desktop_account1_wifi_off
+    - service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: pc_desktop_account2_wifi_off
+
+reboot_pc_in_windows_script:
+  alias: passa_a_windows
+  sequence:
+    - service: shell_command.ubuntu_reboot_grub2
+    - service: shell_command.ubuntu_reboot
+turn_off_laptop_script:
+  alias: spegni_portatile
+  sequence:
+    - service: hassio.addon_stdin
+      data:
+        addon: core_rpc_shutdown
+        input: pc_laptop_off
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.pc_laptop

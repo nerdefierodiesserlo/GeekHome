@@ -1,0 +1,93 @@
+####################################################
+#                                                  #
+#            PRESTAZIONI                           #
+#                                                  #
+####################################################
+  title: Prestazioni
+  panel: true
+  path: home_view
+  icon: mdi:gauge
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      cards:
+        - type: custom:mini-graph-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Temperatura CPU
+          entities:
+            - sensor.cpu_temperature
+        - type: custom:gauge-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Temperatura
+          entity: sensor.cpu_temperature
+          min: 0
+          max: 70
+          severity:
+            green: 30
+            amber: 40
+            red: 50
+        - break
+        - type: custom:mini-graph-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Utilizzo Ram
+          entities:
+          - sensor.memory_use_percent
+        - type: custom:gauge-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Ram
+          unit: '%'
+          entity: sensor.memory_use_percent
+          min: 0
+          max: 100
+          severity:
+            green: 40
+            amber: 55
+            red: 70
+        - break
+        - type: custom:mini-graph-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Utilizzo CPU
+          entities:
+          - sensor.processor_use
+        - type: custom:gauge-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: CPU utilizzata
+          unit: '%'
+          entity: sensor.processor_use
+          min: 0
+          max: 100
+          severity:
+            green: 0
+            amber: 40
+            red: 60
+        - type: thermostat
+          entity: climate.controllo_temperatura_rpi
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################

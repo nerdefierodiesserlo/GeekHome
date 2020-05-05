@@ -1,0 +1,326 @@
+####################################################
+#                                                  #
+#            Server                                #
+#                                                  #
+####################################################
+  title: Server
+  panel: true
+  path: server
+  icon: mdi:nas
+#   popup_cards:
+#     script.update_hd_stats:
+#       title: Aggiorna statistiche
+#       card:
+#         type: entities
+#         entities:
+#           - script.update_hd_stats
+#           - input_boolean.server_control_on_off
+#           - input_boolean.server_control_on_off
+#           - input_boolean.server_control_on_off
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      cards:
+        - type: entities
+          title: Info Server
+          show_header_toggle: false
+          entities:
+            - entity: input_boolean.server_control_on_off
+              name: Gestisci Server
+              state_color: true
+            - entity: switch.outlet_b44d
+              name: Server socket
+              state_color: true
+            - entity: script.update_hd_stats
+              icon: mdi:update
+              name: Aggiorna statistiche
+            - entity: sensor.smb_status_rest
+              icon: mdi:share-variant
+              name: Stato SMB
+            - entity: script.update_smb_status
+              icon: mdi:update
+              name: Aggiorna Stato SMB
+            - entity: automation.spegnimento_programmato
+              icon: mdi:alarm
+              state_color: true
+            - entity: script.reboot_server_script
+              icon: mdi:restart-alert
+            - entity: script.server_mount_script
+              icon: mdi:harddisk-plus
+              state_color: true
+            - entity: script.server_umount_script
+              icon: mdi:harddisk-remove
+              state_color: true
+            - entity: script.check_smb_status_script
+              name: Controllo stato SMB (telegram)
+              icon: mdi:telegram
+              state_color: true
+        - break
+        - type: custom:vertical-stack-in-card
+          title: Western Digital
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.wd_usage_percent
+                  title: Utilizzo
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  max: 100
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 40
+                  - color: Orange
+                    from: 40
+                    to: 80
+                  - color: red
+                    from: 80
+                    to: 100
+                - type: entities
+                  show_header_toggle: false
+                  entities:
+                    - entity: sensor.wd_size
+                      name: Dimensione
+                      icon: mdi:harddisk
+                    - entity: sensor.wd_state
+                      name: Stato
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.wd_used
+                  title: Spazio usato
+                  max: 932
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 300
+                  - color: Orange
+                    from: 300
+                    to: 600
+                  - color: red
+                    from: 600
+                    to: 932
+                - type: 'custom:bar-card'
+                  entity: sensor.wd_avail_space
+                  title: Spazio disponibile
+                  max: 932
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: Red
+                    from: 0
+                    to: 300
+                  - color: Orange
+                    from: 300
+                    to: 600
+                  - color: Green
+                    from: 600
+                    to: 932
+        - type: custom:vertical-stack-in-card
+          title: 'Western Digital 2'
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.wd2_usage_percent
+                  title: Utilizzo
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 40
+                  - color: Orange
+                    from: 40
+                    to: 80
+                  - color: red
+                    from: 80
+                    to: 100
+                - type: entities
+                  show_header_toggle: false
+                  entities:
+                    - entity: sensor.wd2_size
+                      name: Dimensione
+                      icon: mdi:harddisk
+                    - entity: sensor.wd2_state
+                      name: Stato
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.wd2_used
+                  title: Spazio usato
+                  max: 466
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 150
+                  - color: Orange
+                    from: 150
+                    to: 300
+                  - color: red
+                    from: 300
+                    to: 466
+                - type: 'custom:bar-card'
+                  entity: sensor.wd2_avail_space
+                  title: Spazio disponibile
+                  max: 466
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 150
+                  - color: Orange
+                    from: 150
+                    to: 300
+                  - color: red
+                    from: 300
+                    to: 466
+        - break
+        - type: custom:vertical-stack-in-card
+          title: Toshiba
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.toshiba_usage_percent
+                  title: Utilizzo
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 40
+                  - color: Orange
+                    from: 40
+                    to: 80
+                  - color: red
+                    from: 80
+                    to: 100
+                - type: entities
+                  show_header_toggle: false
+                  entities:
+                    - entity: sensor.toshiba_size
+                      name: Dimensione
+                      icon: mdi:harddisk
+                    - entity: sensor.toshiba_state
+                      name: Stato
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.toshiba_used
+                  title: Spazio usato
+                  max: 932
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 300
+                  - color: Orange
+                    from: 300
+                    to: 600
+                  - color: red
+                    from: 600
+                    to: 932
+                - type: 'custom:bar-card'
+                  entity: sensor.toshiba_avail_space
+                  title: Spazio disponibile
+                  max: 932
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 300
+                  - color: Orange
+                    from: 300
+                    to: 600
+                  - color: red
+                    from: 600
+                    to: 932
+        - type: custom:vertical-stack-in-card
+          title: Hitachi
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.hitachi_usage_percent
+                  title: Utilizzo
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 40
+                  - color: Orange
+                    from: 40
+                    to: 80
+                  - color: red
+                    from: 80
+                    to: 100
+                - type: entities
+                  show_header_toggle: false
+                  entities:
+                    - entity: sensor.hitachi_size
+                      name: Dimensione
+                      icon: mdi:harddisk
+                    - entity: sensor.hitachi_state
+                      name: Stato
+            - type: horizontal-stack
+              cards:
+                - type: 'custom:bar-card'
+                  entity: sensor.hitachi_used
+                  title: Spazio usato
+                  max: 233
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 100
+                  - color: Orange
+                    from: 100
+                    to: 200
+                  - color: red
+                    from: 200
+                    to: 233
+                - type: 'custom:bar-card'
+                  entity: sensor.hitachi_avail_space
+                  title: Spazio disponibile
+                  max: 233
+                  positions:
+                    icon: 'off'
+                    name: 'off'
+                  severity:
+                  - color: green
+                    from: 0
+                    to: 100
+                  - color: Orange
+                    from: 100
+                    to: 200
+                  - color: red
+                    from: 200
+                    to: 233
+        - break
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################

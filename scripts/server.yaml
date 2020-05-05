@@ -1,0 +1,249 @@
+alexa_poweron_server_script:
+  alias: Alexa avvisa server acceso
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.2'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('input_boolean.alexa_check_server_state', 'on') and is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            "Il Server è già acceso, se non funziona prova a chiedermi: riavvia server"
+          {% else %}
+            {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+              {{ [
+                  "Va bene, che la forza sia con te",
+                  "Va bene, lunga vita e prosperità",
+                  "Motori avanti tutta",
+                  "Consideralo già fatto",
+                  "Ogni tuo desiderio è un ordine",
+                  "Lo faccio subito, ma non hai detto per favore",
+                  "Senza di me non sapresti più che fare. E io senza di te non mi divertirei più. Ecco perché non ci uccideremo mai.",
+                  "Roger comandante",
+                  "Capo pattuglia chiama Corvo, eseguo",
+                  "In città sei tu la legge, qua sono io",
+                  "O muori da eroe o vivi tanto a lungo da diventare il cattivo",
+                  "Non è tanto chi sono, quanto quello che faccio, che mi qualifica",
+                  "Energia",
+                  "abracadabra",
+                  "Io ti spiezzo in due",
+                  "Rambo, cosa gli rispondiamo? Fanculo",
+                  "La capacità di parlare non fa di te un essere intelligente"
+                ] | random }}
+            {% else %}
+              ""
+            {% endif %}
+          {% endif %}
+        data:
+          type: "tts"
+    - delay: '00:00:10'
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.alexa_check_server_state
+          
+poweroff_server_script:
+  alias: Spegni server
+  sequence:
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Nessuno sta usando il server, spegnimento in corso
+    - service: rest_command.umount_hd
+    - delay: '00:00:20'
+    - service: switch.turn_off
+      data:
+        entity_id: switch.outlet_b44d
+    - delay: '00:00:05'
+    - service: script.update_hd_stats
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.alexa_check_server_state
+
+alexa_poweroff_server_script:
+  alias: Alexa avvisa server spento
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.2'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('input_boolean.alexa_check_server_state', 'off') and is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            "Tranquillo il Server è già spento"
+          {% else %}
+            {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+              {{ [
+                  "Va bene, che la forza sia con te",
+                  "Va bene, lunga vita e prosperità",
+                  "Va bene, spero che il film ti sia piaciuto",
+                  "Consideralo già fatto",
+                  "Ogni tuo desiderio è un ordine",
+                  "Lo faccio subito, ma non ho sentito per favore",
+                  "Lascia fare a me",
+                  "Roger comandante",
+                  "Capo pattuglia chiama Corvo, eseguo",
+                  "In città sei tu la legge, qua sono io...fatto",
+                  "Affermativo, scateno l'inferno",
+                  "Non è tanto chi sono, quanto quello che faccio che mi qualifica",
+                  "Energia",
+                  "No problem",
+                  "Io ti spiezzo in due",
+                  "Rambo, cosa gli rispondiamo? Fanculo"
+                ] | random }}
+            {% else %}
+              ""
+            {% endif %}
+          {% endif %}
+        data:
+          type: "tts"
+    - delay: '00:00:10'
+        
+do_not_poweroff_server_script:
+  alias: Non spegnere Server
+  sequence:
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Qualcuno sta usando il server, impossibile spegnere
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.server_control_on_off
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.alexa_check_server_state
+
+reboot_server_script:
+  alias: Riavvia Server
+  sequence:
+    - service: rest_command.reboot_server
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Riavvio Server in corso
+        
+alexa_reboot_server_script:
+  alias: Alexa avvisa server riavviato
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.2'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('switch.outlet_b44d', 'on')%}
+          "Va bene, riavvio il server....aspetta qualche minuto"
+          {% else %}
+          "Il Server è spento, non posso riavviarlo"
+          {% endif %}
+        data:
+          type: "tts"
+          
+# reboot_ftp_server_script:
+#   alias: Riavvia FTP
+#   sequence:
+#     - service: shell_command.ftp_server_stop
+#     - delay: '00:00:05'
+#     - service: shell_command.ftp_server_start
+#     - service: notify.notifiche_u
+#       data:
+#         title: '*Server*'
+#         message: Server FTP riavviato
+        
+# stop_ftp_server_script:
+#   alias: Stoppa FTP server
+#   sequence:
+#     - service: shell_command.ftp_server_stop
+#     - service: notify.notifiche_u
+#       data:
+#         title: '*Server*'
+#         message: Server FTP stoppato
+        
+# start_ftp_server_script:
+#   alias: Avvia FTP server
+#   sequence:
+#     - service: shell_command.ftp_server_start
+#     - service: notify.notifiche_u
+#       data:
+#         title: '*Server*'
+#         message: Server FTP avvitato
+        
+server_mount_script:
+  alias: Monta HD
+  sequence:
+    - service: rest_command.mount_hd
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Monta HD
+    - delay: '00:00:20'
+    - service: script.update_hd_stats
+    
+server_umount_script:
+  alias: Smonta HD
+  sequence:
+    - service: rest_command.umount_hd
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Smonta HD
+    - delay: '00:00:20'
+    - service: script.update_hd_stats
+        
+# check_ftp_status_script:
+#   alias: Controllo stato FTP
+#   sequence:
+#     - service: shell_command.update_ftp_status
+#     - service: notify.notifiche_u
+#       data_template:
+#         title: '*Server*'
+#         message: >
+#           {% if is_state('sensor.ftp_status', '')%}
+#           "Server FTP offline"
+#           {% else %}
+#           "Server FTP online"
+#           {% endif %}
+
+check_smb_status_script:
+  alias: Controllo stato SMB
+  sequence:
+    - service: homeassistant.update_entity
+      entity_id: sensor.smb_status_rest
+    - delay: '00:00:05'
+    - service: notify.notifiche_u
+      data_template:
+        title: '*Server*'
+        message: >
+          {% if is_state('sensor.smb_status_rest', 'Occupato')%}
+          Server occupato, non puoi spegnerlo
+          {% else %}
+          Server libero, puoi spegnerlo se vuoi
+          {% endif %}
+
+alexa_check_smb_status_master_script:
+  alias: Alexa avvisa sullo stato del server
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.25'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('switch.outlet_b44d', 'on')%}
+          "Il Server è acceso"
+          {% else %}
+          "Il Server è spento"
+          {% endif %}
+        data:
+          type: "tts"

@@ -1,0 +1,195 @@
+####################################################
+#                                                  #
+#            AUTOMAZIONI                           #
+#                                                  #
+####################################################
+  title: Termosifoni
+  icon: mdi:radiator
+  panel: true
+  #icon: mdi:home-assistant
+  path: termosifoni
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      cards:
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Accensioni camera Umberto
+          show_header_toggle: false
+          entities:
+            - type: custom:fold-entity-row
+              open: true
+              head: group.climate_programmazione_group
+              entities:
+                - automation.programmazione_termostato_mansarda_9_30
+                - automation.programmazione_termostato_mansarda_10_30
+                - automation.programmazione_termostato_mansarda_16_30
+                - automation.programmazione_termostato_mansarda_17_30
+                - automation.programmazione_termostato_mansarda_18_00
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Accensioni cucina
+          show_header_toggle: false
+          entities:
+            - type: custom:fold-entity-row
+              open: false
+              head: group.climate_programmazione_group
+              entities:
+                - automation.programmazione_termostato_mansarda_9_30
+                - automation.programmazione_termostato_mansarda_16_30
+                - automation.programmazione_termostato_mansarda_18_00
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          entities:
+            - entity: sensor.dark_sky_temperature
+            - entity: sensor.dark_sky_humidity
+            #- entity: sensor.temperature_and_humidity_sensor_6d4d_temperature
+            #- entity: sensor.temperature_and_humidity_sensor_6d4d_humidity
+        - break
+        - type: thermostat
+          entity: climate.termostato_mansarda
+          name: Mansarda
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Timer termosifoni Umberto
+          show_header_toggle: false
+          entities:
+            - type: custom:fold-entity-row
+              open: false
+              head: timer.timer_termosifoni_mansarda
+              entities:
+                - entity: sensor.thermostat_mansarda_timer
+                - entity: input_number.thermostat_mansarda_hours
+                  name: Ore
+                - entity: input_number.thermostat_mansarda_minutes
+                  name: Minuti
+                - entity: script.change_timer_termosifoni_mansarda
+                  name: Aggiorna timer
+                  icon: mdi:update
+        - break
+        - type: thermostat
+          entity: climate.termostato_primo_piano
+          name: Primo piano
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Timer termosifoni primo piano
+          show_header_toggle: false
+          entities:
+            - type: custom:fold-entity-row
+              open: false
+              head: timer.timer_termosifoni_primo_piano
+              entities:
+                - entity: sensor.thermostat_primo_piano_timer
+                - entity: input_number.thermostat_primo_piano_hours
+                  name: Ore
+                - entity: input_number.thermostat_primo_piano_minutes
+                  name: Minuti
+                - entity: script.change_timer_termosifoni_primo_piano
+                  name: Aggiorna timer
+                  icon: mdi:update
+        # - type: custom:mini-graph-card
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   name: Temperatura esterna
+        #   hours_to_show: 48
+        #   hour24: true
+        #   entities:
+        #   - sensor.temperature_and_humidity_sensor_dc21_temperature
+        #   show:
+        #     labels: true
+        #   color_thresholds:
+        #     - value: 25
+        #       color: "#f39c12"
+        #     - value: 23
+        #       color: "#d35400"
+        #     - value: 20
+        #       color: "#c0392b"
+        # - type: custom:mini-graph-card
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   name: Umidità esterna
+        #   hours_to_show: 48
+        #   hour24: true
+        #   entities:
+        #   - sensor.temperature_and_humidity_sensor_dc21_humidity
+        #   show:
+        #     labels: true
+        #   color_thresholds:
+        #     - value: 30
+        #       color: "#12ecf3"
+        #     - value: 60
+        #       color: "#1295f3"
+        #     - value: 80
+        #       color: "#124ef3"
+        # - type: custom:mini-graph-card
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   name: Temperatura camera
+        #   hours_to_show: 48
+        #   hour24: true
+        #   entities:
+        #   - sensor.temperature_and_humidity_sensor_6d4d_temperature
+        #   show:
+        #     labels: true
+        #   color_thresholds:
+        #     - value: 25
+        #       color: "#f39c12"
+        #     - value: 23
+        #       color: "#d35400"
+        #     - value: 20
+        #       color: "#c0392b"
+        # - type: custom:mini-graph-card
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   name: Umidità camera
+        #   hours_to_show: 48
+        #   hour24: true
+        #   entities:
+        #   - sensor.temperature_and_humidity_sensor_6d4d_humidity
+        #   show:
+        #     labels: true
+        #   color_thresholds:
+        #     - value: 30
+        #       color: "#12ecf3"
+        #     - value: 60
+        #       color: "#1295f3"
+        #     - value: 80
+        #       color: "#124ef3"
+
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################

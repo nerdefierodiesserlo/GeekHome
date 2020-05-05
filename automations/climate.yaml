@@ -1,0 +1,189 @@
+#########################   PROGRAMMAZIONE   ###################################
+    
+- alias: programmazione_termostato_mansarda_9_30
+  trigger:
+    - platform: time
+      at: "9:30:00"
+  condition:
+    - condition: state
+      entity_id: climate.termostato_mansarda
+      state: 'off'
+  action:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+- alias: programmazione_termostato_mansarda_10_30
+  trigger:
+    - platform: time
+      at: "10:30:00"
+  condition:
+    - condition: state
+      entity_id: climate.termostato_mansarda
+      state: 'off'
+  action:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+- alias: programmazione_termostato_mansarda_16_30
+  trigger:
+    - platform: time
+      at: "16:30:00"
+  condition:
+    - condition: state
+      entity_id: climate.termostato_mansarda
+      state: 'off'
+  action:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+- alias: programmazione_termostato_mansarda_17_30
+  trigger:
+    - platform: time
+      at: "17:30:00"
+  condition:
+    - condition: state
+      entity_id: climate.termostato_mansarda
+      state: 'off'
+  action:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+- alias: programmazione_termostato_mansarda_18_00
+  trigger:
+    - platform: time
+      at: "18:00:00"
+  condition:
+    - condition: state
+      entity_id: climate.termostato_mansarda
+      state: 'off'
+  action:
+    - service: climate.turn_on
+      data:
+        entity_id: climate.termostato_mansarda
+
+#########################   MANSARDA   #########################################
+
+- alias: accensione_termosifoni_mansarda
+  trigger:
+    - platform: state
+      entity_id: climate.termostato_mansarda
+      from: 'off'
+      to: 'heat'
+    - platform: state
+      entity_id: climate.termostato_mansarda
+      from: 'off'
+      to: 'auto'
+  action:
+    - service: timer.start
+      data_template:
+        entity_id: timer.timer_termosifoni_mansarda
+        duration: "{{ states('input_number.thermostat_mansarda_hours') | int  }}:{{ states('input_number.thermostat_mansarda_minutes') | int  }}:00"
+
+- alias: reset_timer_mansarda
+  trigger:
+    - platform: state
+      entity_id: climate.termostato_mansarda
+      from: 'heat'
+      to: 'off'
+    - platform: state
+      entity_id: climate.termostato_mansarda
+      from: 'auto'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.timer_termosifoni_mansarda
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.thermostat_mansarda_hours
+        value: 03
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.thermostat_mansarda_minutes
+        value: 00
+        
+- alias: spegnimento_termosifoni_mansarda
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.timer_termosifoni_mansarda
+  action:
+    - service: climate.turn_off
+      data:
+        entity_id: climate.termostato_mansarda
+
+#########################   PRIMO PIANO   ######################################
+
+- alias: accensione_termosifoni_primo_piano
+  trigger:
+    - platform: state
+      entity_id: climate.termostato_primo_piano
+      from: 'off'
+      to: 'heat'
+    - platform: state
+      entity_id: climate.termostato_primo_piano
+      from: 'off'
+      to: 'auto'
+  action:
+    - service: timer.start
+      data_template:
+        entity_id: timer.timer_termosifoni_primo_piano
+        duration: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
+    - service_template: >
+        {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+          script.alexa_riscaldamenti_tts_script
+        {% else %}
+          script.telegram_riscaldamenti_primo_piano_script   
+        {% endif %}                                    
+# l'else serve perche altrimenti se non si verifica il primo if
+# non c'è alcun servizio da eseguire e si verifica un errore
+- alias: reset_timer_primo_piano
+  trigger:
+    - platform: state
+      entity_id: climate.termostato_primo_piano
+      from: 'auto'
+      to: 'off'
+    - platform: state
+      entity_id: climate.termostato_primo_piano
+      from: 'heat'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      entity_id: timer.timer_termosifoni_primo_piano
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.thermostat_primo_piano_hours
+        value: 03
+    - service: input_number.set_value
+      data:
+        entity_id: input_number.thermostat_primo_piano_minutes
+        value: 00
+    - service_template: >
+        {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+          script.alexa_riscaldamenti_tts_script
+        {% else %}
+          script.telegram_riscaldamenti_primo_piano_script
+        {% endif %}
+        
+- alias: spegnimento_termosifoni_primo_piano
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.timer_termosifoni_primo_piano
+  action:
+    - service: climate.turn_off
+      data:
+        entity_id: climate.termostato_primo_piano
+- alias: reset_timer_primo_piano
+  trigger:
+    - platform: state
+      entity_id: sensor.climate_primo_piano_state
+      to: 'idle'
+  action:
+    - service_template: >
+        {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+          script.alexa_temperatura_raggiunta_tts_script
+        {% else %}
+          script.telegram_riscaldamenti_primo_piano_script
+        {% endif %} 

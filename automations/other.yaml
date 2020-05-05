@@ -1,0 +1,88 @@
+- alias: reboot_every_day
+  trigger:
+    - platform: time
+      at: "05:00:00"
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - fri
+  action:
+    - service: homeassistant.restart
+############################   BOOT   ##########################################
+- alias: boot_automation
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: '00:02:00'
+    - service: climate.set_temperature
+      data:
+        entity_id:  climate.termostato_cucina
+        temperature: 18.0
+############################   ALEXA TTS ON/OFF   ##############################
+- alias: alexa_tts_on
+  trigger:
+    - platform: time
+      at: "10:00:00"
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.alexa_tts_on_off
+- alias: alexa_tts_off
+  trigger:
+    - platform: time
+      at: "22:30:00"
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.alexa_tts_on_off
+############################   REBOOT HASSIO  ##################################
+- alias: reboot_home_assistant
+  trigger:
+    - platform: state
+      entity_id: input_boolean.reboot_button
+      from: 'off'
+      to: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.reboot_button
+    - service: homeassistant.restart
+############################   STOP HASSIO  ####################################
+- alias: stop_home_assistant
+  trigger:
+    - platform: state
+      entity_id: input_boolean.stop_button
+      from: 'off'
+      to: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.stop_button
+    - service: homeassistant.stop
+# ############################   CIABATTA ON/OFF   ###############################
+# - alias: desk_toggle
+#   trigger:
+#   - platform: mqtt
+#     topic: zigbee2mqtt/0x00158d00027de0c8
+#   condition:
+#   - condition: template
+#     value_template: '{{ ''shake'' == trigger.payload_json.action }}'
+#   action:
+#   - service: switch.toggle
+#     data:
+#       entity_id: switch.scrivania
+# ###########################   CIABATTA ON/OFF   ###############################
+# - alias: test
+#   trigger:
+#     - platform: state
+#       entity_id: switch.scrivania
+#       from: 'off'
+#       to: 'on'
+#   action:
+#   - service: notify.alexa_media_echo_dot_di_patrizia
+#     data:
+#       message: "ciao"
+#       data:
+#         type: tts

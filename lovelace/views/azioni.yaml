@@ -1,0 +1,93 @@
+####################################################
+#                                                  #
+#            AZIONI                                #
+#                                                  #
+####################################################
+  title: Azioni
+  icon: mdi:ray-start-arrow
+  panel: true
+  #icon: mdi:home-assistant
+  path: azioni
+  cards:
+    - type: custom:layout-card
+      layout: horizontal
+      cards:
+      - type: entities
+        style: |
+          ha-card {
+            background: rgba(0,0,0,0.);
+            border-radius: 15px;
+          }
+        title: Azioni Server
+        show_header_toggle: false
+        entities:
+          - type: custom:fold-entity-row
+            open: false
+            head: group.server_actions_group
+    #   - type: entities
+    #     style: |
+    #       ha-card {
+    #         background: rgba(0,0,0,0.);
+    #         border-radius: 15px;
+    #       }
+    #     title: Zigbee
+    #     show_header_toggle: false
+    #     entities:
+    #       - type: custom:fold-entity-row
+    #         open: false
+    #         head: group.zigbee_group
+      - type: entities
+        style: |
+          ha-card {
+            background: rgba(0,0,0,0.);
+            border-radius: 15px;
+          }
+        title: Altre azioni
+        show_header_toggle: false
+        entities:
+          - type: custom:fold-entity-row
+            open: false
+            head: group.other_actions_group
+      - type: entities
+        style: |
+          ha-card {
+            background: rgba(0,0,0,0.);
+            border-radius: 15px;
+          }
+        title: Azioni luci
+        show_header_toggle: false
+        entities:
+          - type: custom:fold-entity-row
+            open: false
+            head: group.light_actions_group
+      - type: entities
+        style: |
+          ha-card {
+            background: rgba(0,0,0,0.);
+            border-radius: 15px;
+          }
+        title: Azioni PC
+        show_header_toggle: false
+        entities:
+          - type: custom:fold-entity-row
+            open: false
+            head: group.pc_actions_group
+      - type: entities
+        style: |
+          ha-card {
+            background: rgba(0,0,0,0.);
+            border-radius: 15px;
+          }
+        title: Azioni termostato
+        show_header_toggle: false
+        entities:
+          - type: custom:fold-entity-row
+            open: false
+            head: group.climate_actions_group
+
+
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################

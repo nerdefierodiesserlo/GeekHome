@@ -1,0 +1,123 @@
+- alias: server_control_on
+  trigger:
+    - platform: state
+      entity_id: input_boolean.server_control_on_off
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: switch.outlet_b44d
+      state: 'off'
+  action:
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Server acceso
+    - service: switch.turn_on
+      data:
+        entity_id: switch.outlet_b44d
+    # - service: input_boolean.turn_on   # guardia necessaria ad alexa per il tts (vedi script server) 
+    #   data:
+    #     entity_id: input_boolean.alexa_check_server_state
+    - delay: '00:00:20'
+    - service: rest_command.mount_hd
+    - delay: '00:00:20'
+    - service: script.update_hd_stats
+- alias: server_control_off
+  trigger:
+    - platform: state
+      entity_id: input_boolean.server_control_on_off
+      from: 'on'
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: switch.outlet_b44d
+      state: 'on'
+  action:
+    - service: homeassistant.update_entity
+      entity_id: sensor.smb_status_rest
+    - delay: '00:00:05'
+    - service_template: >
+        {% if is_state('sensor.smb_status_rest', 'Libero')%}
+          script.poweroff_server_script
+        {% else %}
+          script.do_not_poweroff_server_script
+        {% endif %}
+
+############################   ACCENDI SERVER   ################################
+- alias: turn_on_server_single_click
+  trigger:
+    - platform: mqtt
+      topic: zigbee2mqtt/0x00158d00032699e9
+  condition:
+    - condition: template
+      value_template: '{{ ''single'' == trigger.payload_json.click }}'
+    - condition: state
+      entity_id: switch.outlet_b44d
+      state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.server_control_on_off
+- alias: turn_on_server_double_click
+  trigger:
+    - platform: mqtt
+      topic: zigbee2mqtt/0x00158d000223e3f5
+  condition:
+    - condition: template
+      value_template: '{{ ''double'' == trigger.payload_json.click }}'
+    - condition: state
+      entity_id: switch.outlet_b44d
+      state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.server_control_on_off
+############################   SPEGNI SERVER   #################################
+- alias: turn_off_server_double_click
+  trigger:
+    - platform: mqtt
+      topic: zigbee2mqtt/0x00158d00032699e9
+  condition:
+    - condition: template
+      value_template: '{{ ''double'' == trigger.payload_json.click }}'
+    - condition: state
+      entity_id: switch.outlet_b44d
+      state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.server_control_on_off
+############################   SPEGNIMENTO PROGRAMMATO   #######################
+- alias: spegnimento_programmato
+  trigger:
+    - platform: time
+      at: "13:00:00"
+    - platform: time
+      at: "13:30:00"
+    - platform: time
+      at: "14:00:00"
+    - platform: time
+      at: "16:00:00"
+    - platform: time
+      at: "16:30:00"
+    - platform: time
+      at: "17:00:00"
+    - platform: time
+      at: "18:00:00"
+    - platform: time
+      at: "20:00:00"
+    - platform: time
+      at: "00:00:00"
+    - platform: time
+      at: "00:30:00"
+    - platform: time
+      at: "01:30:00"
+  condition:
+    condition: state
+    state: 'on'
+    entity_id: switch.outlet_b44d
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.server_control_on_off

@@ -1,0 +1,31 @@
+# accendi_mibox_script:
+#   alias: accendi_mibox
+#   sequence:
+#     - service: switch.turn_on
+#       data:
+#         entity_id: switch.mi_box
+
+# spegni_mibox_script:
+#   alias: spegni_mibox
+#   sequence:
+#     - service: switch.turn_off
+#       data:
+#         entity_id: switch.mi_box
+    
+# accendi_cinema_script:
+#   alias: accendi_cinema
+#   sequence:
+#     - service: switch.turn_on
+#       data:
+#         entity_id: switch.mi_box
+#     - service: switch.turn_on
+#       data:
+#         entity_id: switch.outlet_b44d
+
+# spegni_cinema_script:
+#   alias: spegni_cinema
+#   sequence:
+#     - service: switch.turn_off
+#       data:
+#         entity_id: switch.mi_box
+#     - service: script.turn_off_pi_zero_script

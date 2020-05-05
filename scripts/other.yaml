@@ -1,0 +1,70 @@
+#############################   HASSIO   #######################################
+reboot_home_assistant_script:
+  alias: Riavvia home assistant
+  sequence:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.reboot_button
+    - service: homeassistant.restart
+    
+poweroff_home_assistant_script:
+  alias: Spegni home assistant
+  sequence:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.stop_button
+    - service: homeassistant.stop
+################################################################################
+update_mappa_zigbee:
+  alias: Aggiornamento Mappa Zigbee
+  sequence:
+    service: zigbee2mqtt_networkmap.update
+
+zigbee_remove:
+  alias: Rimuovi sensore Zigbee
+  sequence:
+    - service: mqtt.publish
+      data_template:
+        topic: "zigbee2mqtt/bridge/config/remove"
+        payload: "{{ states('input_text.remove_sensor') }}" 
+#############################   MQTT   #########################################
+# run_vlc:
+#   alias: Run vlc
+#   sequence:
+#     - service: mqtt.publish
+#       data:
+#         payload: org.videolan.vlc
+#         topic: homeassistant/sensor/android_redmi_apps/startapp
+#############################   ARIELA   #######################################
+# check_position_script:
+#   alias: controlla_posizione
+#   sequence:
+#     - service: notify.notifiche_u
+#       data_template:
+#         title: '*Posizione*'
+#         message: >
+#           {% if is_state_attr('sensor.posizione_umberto', 'postal_code', '52100') and is_state_attr('sensor.posizione_umberto', 'street', 'Via Donatello') %}
+#           "Umberto è a casa"
+#           {% else %}
+#           "Umberto si trova in {{ state_attr('sensor.posizione_umberto', 'formatted_address') }}"
+#           {% endif %}
+
+update_hd_stats:
+  alias: update_hd_stats
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.hitachi_rest
+        - sensor.wd_rest
+        - sensor.wd2_rest
+        - sensor.toshiba_rest
+update_smb_status:
+  alias: update_smb_status
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.smb_status_rest
+
+
