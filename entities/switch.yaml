@@ -1,46 +1,43 @@
 #   - platform: xiaomi_miio
 #     name: Xiaomi Wifi
-#     host: 192.168.1.140
+#     host: 192.168.1.xxx
 #     token: !secret token_xiaomi_plug
 #     model: chuangmi.plug.m3
 #   - platform: xiaomi_miio
 #     name: Scrivania
-#     host: 192.168.1.100
+#     host: 192.168.1.xxx
 #     token: !secret token_xiaomi_strip
 #   - platform: broadlink
-#     host: 192.168.1.102
+#     host: 192.168.1.xxx
 #     mac: !secret broadlink_mac
 #     type: sp2
 #     friendly_name: Seconda Presa
   - platform: wake_on_lan
     name: computer_lan_wol
     mac: !secret computer_mac
-    host: 192.168.1.139
+    host: 192.168.1.xxx
     turn_off: 
       service: script.turn_off_pc_script
   - platform: wake_on_lan
     name: computer_wifi_wol
     mac: !secret computer_mac
-    host: 192.168.1.104
+    host: 192.168.1.xxx
     turn_off: 
       service: script.turn_off_pc_wifi_script
   - platform: wake_on_lan 
     name: laptop_wol
     mac: !secret laptop_mac
-    host: 192.168.1.133
+    host: 192.168.1.xxx
     turn_off: 
       service: script.turn_off_laptop_script
   - platform: wake_on_lan 
     name: pi_zero_wol
     mac: !secret pi_zero_mac
-    host: 192.168.1.14
-  - platform: rpi_gpio
-    ports:
-      17: Luce gpio
+    host: 192.168.1.xxx
 #   - platform: mqtt
 #     name: "Switch Termostato"
-#     state_topic: "shellies/shelly1-76887F/relay/0"
-#     command_topic: "shellies/shelly1-76887F/relay/0/command"
+#     state_topic: "shellies/shelly1-xxxxx/relay/0"
+#     command_topic: "shellies/shelly1-xxxxx/relay/0/command"
 #     qos: 0
 #     payload_on: "on"
 #     payload_off: "off"
