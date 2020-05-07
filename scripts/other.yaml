@@ -27,27 +27,6 @@ zigbee_remove:
       data_template:
         topic: "zigbee2mqtt/bridge/config/remove"
         payload: "{{ states('input_text.remove_sensor') }}" 
-#############################   MQTT   #########################################
-# run_vlc:
-#   alias: Run vlc
-#   sequence:
-#     - service: mqtt.publish
-#       data:
-#         payload: org.videolan.vlc
-#         topic: homeassistant/sensor/android_redmi_apps/startapp
-#############################   ARIELA   #######################################
-# check_position_script:
-#   alias: controlla_posizione
-#   sequence:
-#     - service: notify.notifiche_u
-#       data_template:
-#         title: '*Posizione*'
-#         message: >
-#           {% if is_state_attr('sensor.posizione_umberto', 'postal_code', '52100') and is_state_attr('sensor.posizione_umberto', 'street', 'Via Donatello') %}
-#           "Umberto è a casa"
-#           {% else %}
-#           "Umberto si trova in {{ state_attr('sensor.posizione_umberto', 'formatted_address') }}"
-#           {% endif %}
 
 update_hd_stats:
   alias: update_hd_stats
@@ -66,5 +45,3 @@ update_smb_status:
       data:
         entity_id:
         - sensor.smb_status_rest
-
-
