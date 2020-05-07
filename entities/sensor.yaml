@@ -21,26 +21,22 @@
       - type: memory_free
       - type: memory_use
       - type: processor_use
-#   - platform: rest
-#     resource: 'http://192.168.1.139:1234/hassio/get_test_status3'
-#     name: test_status_rest
-#     json_attributes:
-#       - name
-#       - percent
-#       - avail
-#     scan_interval: 43200
-#     value_template: '{{ value_json.name }}'
-#     # unit_of_measurement: '%'
-#   - platform: rest
-#     resource: 'http://192.168.1.139:1234/hassio/get_test_status2'
-#     name: test_status_rest2
-#     scan_interval: 60
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/smb/get_smb_status'
+    resource: 'http://192.168.1.xxx:xxxx/hassio/smb/smb_locked_file'
+    name: smb_locked_file
+    scan_interval: 3600
+  - platform: rest
+    resource: 'http://192.168.1.xxx:xxxx/hassio/pizero/pizero_temp'
+    name: pizero_temp
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+    scan_interval: 3600
+  - platform: rest
+    resource: 'http://192.168.1.xxx:xxxx/hassio/smb/get_smb_status'
     name: smb_status_rest
     scan_interval: 3600
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd_stats'
+    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_wd_stats'
     name: wd_rest
     json_attributes:
       - name
@@ -52,7 +48,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_toshiba_stats'
+    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_toshiba_stats'
     name: toshiba_rest
     json_attributes:
       - name
@@ -64,7 +60,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_hitachi_stats'
+    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_hitachi_stats'
     name: hitachi_rest
     json_attributes:
       - name
@@ -76,7 +72,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd2_stats'
+    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_wd2_stats'
     name: wd2_rest
     json_attributes:
       - name
@@ -108,7 +104,6 @@
       - temperature_low
       - wind_bearing
       - wind_speed
-      
   - platform: template
     sensors:
       climate_primo_piano_state:
