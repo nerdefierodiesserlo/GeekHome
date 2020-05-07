@@ -1,6 +1,0 @@
-title: Home
-views:
-  - title: Home
-    path: default_view
-    icon: 'mdi:home'
-    cards: !include /config/lovelace/test2.yaml
