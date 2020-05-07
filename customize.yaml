@@ -1,5 +1,5 @@
-person.umberto:
-  entity_picture: /local/images/test3.jpg
+person.nerdefierodiesserlo:
+  entity_picture: /local/images/myimage.jpg
 ################################################################################
 
 automation.turn_on_server_single_click:
@@ -81,26 +81,15 @@ sensor.temperature_and_humidity_sensor_6d4d_temperature:
 sensor.temperature_and_humidity_sensor_6d4d_humidity:
   friendly_name: "Umidità studio"
 
-# sensor.position_complete:
-#   icon: mdi:crosshairs-gps
-
 ################################################################################
 
 input_boolean.manual_backup:
   icon: mdi:cloud-sync
-
-# device_tracker.redmi:
-#   friendly_name: "Umberto"
-#   entity_picture: /local/images/test3.jpg
-#   consider_home: 100
   
 zone.home:
   friendly_name: "Casa"
   icon: mdi:home
   radius: 100
-zone.casa_chiara:
-  friendly_name: "Chiara"
-  icon: mdi:cat
   
 media_player.mibox3:
   friendly_name: MiBox
