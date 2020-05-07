@@ -1,0 +1,306 @@
+#################################################################
+#                                                               #
+#                       Packages/Daily                          #
+#                                                               #
+#################################################################
+
+#################################################################
+#                                                               #
+#                          Customize                            #
+#                                                               #
+#################################################################
+homeassistant:
+  customize:
+    ################################################
+    ## Node Anchors
+    ################################################
+
+    package.node_anchors:
+      customize: &customize
+        package: 'daily_routines'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+    
+    ################################################
+    ## sensor
+    ################################################
+    
+    input_boolean.gdrive_backup:
+      <<: *customize
+      friendly_name: "Google Drive Backup"
+
+    input_boolean.gdrive_sync_completed:
+      <<: *customize
+      friendly_name: "Google Drive Upload Completato"
+
+    input_datetime.gdrive_backup_time:
+      <<: *customize
+      icon: mdi:clock-outline
+
+    input_select.gdrive_backup_day:
+      <<: *customize
+      icon: mdi:calendar
+
+    input_number.gdrive_ritardo_upload:
+      <<: *customize
+      icon: mdi:timer-sand 
+      
+#########################################################
+#                                                       #
+#             COMANDO UPLOAD GOOGLE DRIVE               #
+#         (inserire l'ip del vostro raspberry)          #
+#########################################################      
+rest_command:
+  google_backup:
+    url: 'http://192.168.1.119:8055/gb/doBackup'
+    timeout: '300'
+
+#########################################################
+#                                                       #
+#                       GROUP                           #
+#                                                       #
+#########################################################
+group:
+  gdrive_pack:
+    name: Google Drive Pack
+    entities:
+      - input_boolean.gdrive_backup
+      - input_boolean.gdrive_sync_completed
+      - input_datetime.gdrive_backup_time
+      - input_select.gdrive_backup_day
+      - input_text.gdrive_backup_status
+      - input_number.gdrive_ritardo_upload
+      
+#########################################################
+#                                                       #
+#                        INPUT                          #
+#                                                       #
+#########################################################
+input_boolean:
+  gdrive_backup:
+    name: Google Drive Backup
+    initial: 'on'
+    icon: mdi:cloud-upload
+
+  gdrive_sync_completed:
+    name: Google Drive Sync Completato
+    initial: 'off'
+    icon: mdi:google-drive
+
+#########################################################
+input_select:
+  gdrive_backup_day:
+    name: Giorno di Backup
+    options:
+      - "Tutti i giorni"
+      - "Lun - Mer - Ven"
+      - "Lun - Ven"
+      - "Sabato"
+      - "Domenica"
+      - "Mai"
+    initial: "Lun - Mer - Ven"
+    icon: mdi:calendar
+
+#########################################################
+input_datetime:
+  gdrive_backup_time:
+    name: "Orario Backup"
+    has_date: false
+    has_time: true
+    initial: '06:00'
+
+#########################################################
+input_text:
+  gdrive_backup_status:
+    icon: mdi:database-check
+    name: Stato GDrive Backup
+    initial: Normale
+    
+#########################################################    
+input_number:
+  gdrive_ritardo_upload:
+    name: Ritardo Upload GDrive
+    initial: 30
+    min: 15
+    max: 180
+    step: 15
+    icon: mdi:timer-sand 
+    
+#########################################################
+#                                                       #
+#                        SCRIPT                         #
+#                                                       #
+#########################################################
+script:
+  check_gdrive_successful:
+    sequence:
+    - service: notify.notifiche_u
+      data_template:
+        title: '*-- GDrive Backup HASSIO --*'        
+        message: &check_sync >
+            {% if is_state("input_boolean.gdrive_sync_completed", "off")  -%}
+              ERRORE nel Gdrive backup!
+            {%- else -%}
+              Backup su GDrive completato alle {{states('sensor.time')}}
+            {%- endif %}
+    - delay: '00:00:5'    
+    # - service: persistent_notification.create
+    #   data_template:
+    #     message: *check_sync
+    - delay: '00:00:5'
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.gdrive_backup_status
+        value: *check_sync
+    - delay: '00:00:5'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.gdrive_sync_completed      
+
+#########################################################
+#                                                       #
+#                     AUTOMAZIONI                       #
+#               SNAPSHOT e GOOGLE DRIVE                 #
+#########################################################
+automation:
+
+  - alias: automazione Hassio gdrive backup
+    initial_state: 'on'
+    trigger:
+      platform: template
+      value_template: >-
+        {{ states('sensor.time') == (states.input_datetime.gdrive_backup_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}
+    condition:
+    - condition: state
+      entity_id: input_boolean.gdrive_backup
+      state: 'on'
+    - condition: template
+      value_template: >-
+        {% set today = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][now().weekday()] %}
+        {% if is_state("input_select.gdrive_backup_day", "Tutti i giorni") %} true
+        {% elif (is_state("input_select.gdrive_backup_day", "Lun - Ven") and today in ["Monday","Friday"]) %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Sabato") and today in ["Saturday"] %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Domenica") and today in ["Sunday"] %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Lun - Mer - Ven") and today in ["Monday","Wednesday","Friday"] %} true
+        {% else %} false
+        {% endif %}
+    action:
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.gdrive_backup_status
+        value: Avviato Snapshot GDrive alle {{states('sensor.time')}}
+    - service: hassio.snapshot_full
+      data_template:
+        name: Backup automatico GDrive {{ now().strftime('%Y-%m-%d') }}
+    - delay: '00:00:5'        
+    # - service: persistent_notification.create
+    #   data:
+    #     message: "Creato backup automatico GDrive {{ now().strftime('%Y-%m-%d') }}"
+    - service: notify.notifiche_u
+      data:
+        title: '*Google Drive Backup*'
+        message: 'Avviato snapshot per GDrive in locale'
+#########################################################
+  - alias: controllo nuovi file share gdrive backup
+    initial_state: 'on'
+    trigger:
+      platform: event
+      event_type: folder_watcher
+      event_data:
+        event_type: created
+    action:
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.gdrive_backup_status
+        value: Creato Snapshot GDrive alle {{states('sensor.time')}}
+
+#########################################################
+  - alias: uploaded backup gdrive
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: input_boolean.gdrive_sync_completed
+      to: 'on'
+    action:
+    - service: script.turn_on
+      entity_id: script.check_gdrive_successful
+
+#########################################################
+  - alias: upload Google Drive backup
+    initial_state: 'on'
+    trigger:
+      platform: template
+      value_template: >-
+        {{ states('sensor.time') == (((states.input_datetime.gdrive_backup_time.attributes.timestamp | int) + (states('input_number.gdrive_ritardo_upload') | int  * 60)) | timestamp_custom('%H:%M', False)) }}
+    condition:
+    - condition: state
+      entity_id: input_boolean.gdrive_backup
+      state: 'on'
+    - condition: template
+      value_template: >-
+        {% set today = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][now().weekday()] %}
+        {% if is_state("input_select.gdrive_backup_day", "Tutti i giorni") %} true
+        {% elif (is_state("input_select.gdrive_backup_day", "Lun - Ven") and today in ["Monday","Friday"]) %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Sabato") and today in ["Saturday"] %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Domenica") and today in ["Sunday"] %} true
+        {% elif is_state("input_select.gdrive_backup_day", "Lun - Mer - Ven") and today in ["Monday","Wednesday","Friday"] %} true
+        {% else %} false
+        {% endif %}
+    action:
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.gdrive_backup_status
+        value: 'Avviato backup su Google Drive'
+    - service: rest_command.google_backup
+    # - service: persistent_notification.create
+    #   data:
+    #     message: "Copia backup creata su drive"
+#########################################################      
+  - alias: manual backup
+    trigger:
+      - platform: state
+        entity_id: input_boolean.manual_backup
+        from: 'off'
+        to: 'on'
+    action:
+      - service: notify.notifiche_u
+        data:
+          title: '*GDrive Backup*'
+          message: 'Avviato Backup manuale'
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.gdrive_backup_status
+          value: Snapshot alle {{states('sensor.time')}}
+      - service: hassio.snapshot_full
+        data_template:
+          name: Backup automatico {{ now().strftime('%Y-%m-%d') }}
+      - delay: '00:05:00'
+      - service: notify.notifiche_u
+        data:
+          title: '*GDrive Backup*'
+          message: 'Avvio upload'
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.gdrive_backup_status
+          value: 'Avviato backup su GDrive'
+      - service: rest_command.google_backup
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.manual_backup
+      
+  - alias: notify_complete
+    trigger:
+      - platform: state
+        entity_id: input_boolean.dropbox_sync_completed
+        from: 'off'
+        to: 'on'
+    action:
+      - service: notify.notifiche_u
+        data:
+          title: '*Goggle Drive Backup*'
+          message: 'Caricato su Google Drive'
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.gdrive_backup_status
+          value: 'Caricato su Google Drive'

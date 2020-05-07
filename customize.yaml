@@ -1,0 +1,106 @@
+person.umberto:
+  entity_picture: /local/images/test3.jpg
+################################################################################
+
+automation.turn_on_server_single_click:
+  friendly_name: "Accendi server (click singolo)"
+  
+automation.turn_on_server_double_click:
+  friendly_name: "Accendi server (click doppio)"
+  
+automation.turn_off_server_double_click:
+  friendly_name: "Spegni server (click doppio)"
+  
+automation.find_bluetooth_devices:
+  friendly_name: "Cerca dispositivi Bluetooth (double click)"
+  
+automation.spegnimento_programmato:
+  friendly_name: "Spegnimento programmato"
+  
+automation.turn_on_pi_zero:
+  friendly_name: "Accendi Raspberry Pi Zero"
+
+automation.turn_off_pi_zero:
+  friendly_name: "Spegni Raspberry Pi Zero"
+
+automation.start_speedtest:
+  friendly_name: "Esegui Speedtest"
+  
+automation.reboot_home_assistant:
+  friendly_name: "Reboot HA"
+  
+automation.stop_home_assistant:
+  friendly_name: "Stop HA"
+  
+automation.desk_toggle:
+  friendly_name: "Accendi/Spegni Scrivania"
+  
+automation.turn_off_pc_desktop:
+  friendly_name: "Spegni Pc-Desktop"
+
+automation.turn_off_pc_laptop:
+  friendly_name: "Spegni Pc-Laptop"
+
+automation.programmazione_termostato_mansarda_9_30:
+  friendly_name: "Mattina 9:30"
+automation.programmazione_termostato_mansarda_10_30:
+  friendly_name: "Mattina 10:30"
+automation.programmazione_termostato_mansarda_16_30:
+  friendly_name: "Pomeriggio 16:30"
+automation.programmazione_termostato_mansarda_17_30:
+  friendly_name: "Sera 17:30"
+automation.programmazione_termostato_mansarda_18_00:
+  friendly_name: "Sera 18:00"
+
+################################################################################
+  
+sensor.0x00158d00032699e9_battery:
+  friendly_name: "Pulsante 1"
+  
+sensor.0x00158d000223e3f5_battery:
+  friendly_name: "Pulsante 2"
+  
+sensor.0x00158d00027de0c8_battery:
+  friendly_name: "Aqara cube"
+
+sensor.dark_sky_temperature:
+  friendly_name: "Temperatura esterna"
+
+sensor.dark_sky_humidity:
+  friendly_name: "Umidità esterna"
+  
+sensor.temperature_and_humidity_sensor_dc21_temperature:
+  friendly_name: "Temperatura salotto"
+
+sensor.temperature_and_humidity_sensor_dc21_humidity:
+  friendly_name: "Umidità salotto"
+
+sensor.temperature_and_humidity_sensor_6d4d_temperature:
+  friendly_name: "Temperatura studio"
+
+sensor.temperature_and_humidity_sensor_6d4d_humidity:
+  friendly_name: "Umidità studio"
+
+# sensor.position_complete:
+#   icon: mdi:crosshairs-gps
+
+################################################################################
+
+input_boolean.manual_backup:
+  icon: mdi:cloud-sync
+
+# device_tracker.redmi:
+#   friendly_name: "Umberto"
+#   entity_picture: /local/images/test3.jpg
+#   consider_home: 100
+  
+zone.home:
+  friendly_name: "Casa"
+  icon: mdi:home
+  radius: 100
+zone.casa_chiara:
+  friendly_name: "Chiara"
+  icon: mdi:cat
+  
+media_player.mibox3:
+  friendly_name: MiBox
