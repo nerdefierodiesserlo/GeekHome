@@ -11,7 +11,6 @@ zeroconf:
 lovelace:
   mode: yaml
 
-#lovelace: !include /config/lovelace.yaml 
 ################################################################################
 
 frontend:
@@ -56,7 +55,6 @@ http:
   base_url: !secret http_base_url
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
-  #api_password: !secret http_password
   ip_ban_enabled: True
   login_attempts_threshold: 5
   
@@ -67,51 +65,45 @@ ifttt:
   key: !secret ifttt_key
   
 rest_command:
-#   smb_status_update:
-#     url: 'http://192.168.1.14:1234/hassio/smb/smb_status_update'
   mount_hd:
-    url: 'http://192.168.1.14:1234/hassio/nas/mountHD'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mountHD'
   umount_hd:
-    url: 'http://192.168.1.14:1234/hassio/nas/umountHD'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umountHD'
   reboot_server:
-    url: 'http://192.168.1.14:1234/hassio/nas/reboot'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/reboot'
   poweroff_server:
-    url: 'http://192.168.1.14:1234/hassio/nas/poweroff'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/poweroff'
   mount_wd:
-    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd'
   umount_wd:
-    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd'
   mount_wd2:
-    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd2'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd2'
   umount_wd2:
-    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd2'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd2'
   mount_w3:
-    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd3'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd3'
   umount_w3:
-    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd3'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd3'
   mount_toshiba:
-    url: 'http://192.168.1.14:1234/hassio/nas/mount_toshiba'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_toshiba'
   umount_toshiba:
-    url: 'http://192.168.1.14:1234/hassio/nas/umount_toshiba'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_toshiba'
   mount_hitachi:
-    url: 'http://192.168.1.14:1234/hassio/nas/mount_hitachi'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_hitachi'
   umount_hitachi:
-    url: 'http://192.168.1.14:1234/hassio/nas/umount_hitachi'
+    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_hitachi'
 #########################   TELEGRAM   #########################################
 
 telegram_bot:
   - platform: polling
     api_key: !secret telegram_bot_api
     allowed_chat_ids:
-      - !secret telegram_chat_id_u
-      - !secret telegram_chat_id_c
+      - !secret telegram_chat_id
 notify:
-  - name: notifiche_u
+  - name: notifiche
     platform: telegram
-    chat_id: !secret telegram_chat_id_u
-  - name: notifiche_c
-    platform: telegram
-    chat_id: !secret telegram_chat_id_c
+    chat_id: !secret telegram_chat_id
   - platform: alexa_media
     name: alexa_media
       
@@ -132,46 +124,6 @@ timer: !include /config/entities/timer.yaml
 yeelight: !include /config/entities/yeelight.yaml
 #############################   SHELL   ########################################
 
-#shell_command:
-#   server_off: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo poweroff"
-#   server_reboot: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo reboot"
-#   server_umount: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo sh /home/serverdiumberto/umountHD.sh"
-#   server_mount: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo sh /home/serverdiumberto/mountHD.sh"
-#   ftp_server_stop: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo /etc/init.d/noip2 stop"
-#   ftp_server_start: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo /etc/init.d/noip2 start"
-#   ftp_server_reboot: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo service proftpd restart"
-#  update_smb_status: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo sh /home/serverdiumberto/smbStatusScript.sh"
-#   update_ftp_status: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'pi@192.168.1.14' sudo bash -c 'ps -A | grep noip2 > ftpStatus'"
-#   ubuntu_lan_off: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'umberto@192.168.1.139' sudo -s poweroff"
-#   ubuntu_wifi_off: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'umberto@192.168.1.104' sudo -s poweroff"
-#   ubuntu_reboot: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'umberto@192.168.1.139' sudo -s reboot"
-#   ubuntu_reboot_grub2: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa 'umberto@192.168.1.139' sudo grub-reboot 2"
-###########################   PLACES   ######################################### 
-
-# sensor places_umberto:
-#   - platform: places
-#     name: posizione_umberto
-#     devicetracker_id: device_tracker.redmi
-#     options: zone,place
-#     map_provider: google
-#     map_zoom: 19
-#     home_zone: zone.home
-    
-##########################   PROXIMITY   #######################################
-
-# proximity:
-#   home:
-#     devices:
-#       - device_tracker.redmi
-#     tolerance: 50
-#     unit_of_measurement: km
-#   casa_chiara:
-#     zone: casa_chiara
-#     devices:
-#       - device_tracker.redmi
-#     tolerance: 50
-#     unit_of_measurement: km
-    
 #########################   DISCOVERY   ########################################
 
 discovery:
@@ -185,17 +137,15 @@ shelly:
   discovery: true
   show_id_in_name: false
   devices:
-    - id: "7703E4"
+    - id: "xxxxx"
       light_switch: true
       name: Luce bagno
-    - id: "76F7D1"
+    - id: "xxxxx"
       light_switch: true
       name: Luce scale
-    - id: "55DFE4"
+    - id: "xxxxx"
       light_switch: true
       name: Luce camera
-    # - id: "76887F"
-    #   name: Switch termostato
 api:
 alexa: !include /config/entities/alexa.yaml
 
