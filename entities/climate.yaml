@@ -1,3 +1,4 @@
+#termostato virtuale
 #   - platform: generic_thermostat
 #     name: Termostato Umberto
 #     heater: switch.shelly_shsw_1_76887f  #termostato
@@ -14,11 +15,11 @@
 #     initial_hvac_mode: "off"
   - platform: floureon
     name: Termostato primo piano
-    mac: "24:df:a7:13:c7:5b"
+    mac: "xx:xx:xx:xx:xx:xx"
     host: 192.168.1.149
     use_external_temp: false
   - platform: floureon
     name: Termostato mansarda
-    mac: "24:df:a7:13:c8:89"
+    mac: "xx:xx:xx:xx:xx:xx"
     host: 192.168.1.150
     use_external_temp: false
