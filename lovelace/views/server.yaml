@@ -7,21 +7,16 @@
   panel: true
   path: server
   icon: mdi:nas
-#   popup_cards:
-#     script.update_hd_stats:
-#       title: Aggiorna statistiche
-#       card:
-#         type: entities
-#         entities:
-#           - script.update_hd_stats
-#           - input_boolean.server_control_on_off
-#           - input_boolean.server_control_on_off
-#           - input_boolean.server_control_on_off
   cards:
     - type: custom:layout-card
       layout: vertical
       cards:
         - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
           title: Info Server
           show_header_toggle: false
           entities:
@@ -31,24 +26,37 @@
             - entity: switch.outlet_b44d
               name: Server socket
               state_color: true
+            - entity: sensor.pizero_temp
+              icon: mdi:temperature-celsius
+              name: Temperatura Pi Zero
+              secondary_info: last-changed
             - entity: script.update_hd_stats
               icon: mdi:update
               name: Aggiorna statistiche
+              secondary_info: last-triggered
+            - entity: sensor.smb_locked_file
+              name: File in condivisione
+              icon: mdi:share-variant
+              secondary_info: last-changed
             - entity: sensor.smb_status_rest
               icon: mdi:share-variant
+              secondary_info: last-changed
               name: Stato SMB
             - entity: script.update_smb_status
               icon: mdi:update
               name: Aggiorna Stato SMB
+              secondary_info: last-triggered
             - entity: automation.spegnimento_programmato
               icon: mdi:alarm
               state_color: true
             - entity: script.reboot_server_script
               icon: mdi:restart-alert
             - entity: script.server_mount_script
+              name: Monta tutti gli Hard Disk
               icon: mdi:harddisk-plus
               state_color: true
             - entity: script.server_umount_script
+              name: Smonta tutti gli Hard Disk
               icon: mdi:harddisk-remove
               state_color: true
             - entity: script.check_smb_status_script
@@ -56,38 +64,21 @@
               icon: mdi:telegram
               state_color: true
         - break
-        - type: custom:vertical-stack-in-card
-          title: Western Digital
-          cards:
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.wd_usage_percent
-                  title: Utilizzo
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  max: 100
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 40
-                  - color: Orange
-                    from: 40
-                    to: 80
-                  - color: red
-                    from: 80
-                    to: 100
-                - type: entities
-                  show_header_toggle: false
-                  entities:
-                    - entity: sensor.wd_size
-                      name: Dimensione
-                      icon: mdi:harddisk
-                    - entity: sensor.wd_state
-                      name: Stato
-            - type: horizontal-stack
-              cards:
+        - type: "custom:config-template-card"
+          entities:
+            - sensor.wd_state
+            - input_boolean.server_control_on_off
+          card:
+            type: custom:vertical-stack-in-card
+            title: "${'WD - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.wd_state'].state + ' (' + states['sensor.wd_size'].state) + ' GB)'}"
+            style: |
+              ha-card {
+                background: rgba(0,0,0,0.);
+                border-radius: 15px;
+              }
+            cards:
+              - type: horizontal-stack
+                cards:
                 - type: 'custom:bar-card'
                   entity: sensor.wd_used
                   title: Spazio usato
@@ -105,6 +96,8 @@
                   - color: red
                     from: 600
                     to: 932
+              - type: horizontal-stack
+                cards:
                 - type: 'custom:bar-card'
                   entity: sensor.wd_avail_space
                   title: Spazio disponibile
@@ -122,202 +115,232 @@
                   - color: Green
                     from: 600
                     to: 932
-        - type: custom:vertical-stack-in-card
-          title: 'Western Digital 2'
-          cards:
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.wd2_usage_percent
-                  title: Utilizzo
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 40
-                  - color: Orange
-                    from: 40
-                    to: 80
-                  - color: red
-                    from: 80
-                    to: 100
-                - type: entities
-                  show_header_toggle: false
-                  entities:
-                    - entity: sensor.wd2_size
-                      name: Dimensione
-                      icon: mdi:harddisk
-                    - entity: sensor.wd2_state
-                      name: Stato
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.wd2_used
-                  title: Spazio usato
-                  max: 466
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 150
-                  - color: Orange
-                    from: 150
-                    to: 300
-                  - color: red
-                    from: 300
-                    to: 466
-                - type: 'custom:bar-card'
-                  entity: sensor.wd2_avail_space
-                  title: Spazio disponibile
-                  max: 466
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 150
-                  - color: Orange
-                    from: 150
-                    to: 300
-                  - color: red
-                    from: 300
-                    to: 466
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:config-template-card"
+                    entities:
+                      - sensor.wd_state
+                      - input_boolean.server_control_on_off
+                    card:
+                      type: entities
+                      show_header_toggle: false
+                      entities:
+                        - entity: sensor.wd_usage_percent
+                          name: Percentuale utilizzo
+                          icon: mdi:harddisk
+                        - type: button
+                          name: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'Accendi tutto':(states['sensor.wd_state'].state === 'Montato' ? 'Smonta':'Monta')}"
+                          tap_action:
+                            action: call-service
+                            service: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'script.call_service_server_turn_on':(states['sensor.wd_state'].state === 'Montato' ? 'script.umount_wd':'script.mount_wd')}"
+        - type: "custom:config-template-card"
+          entities:
+            - sensor.wd2_state
+            - input_boolean.server_control_on_off
+          card:
+            type: custom:vertical-stack-in-card
+            style: |
+              ha-card {
+                background: rgba(0,0,0,0.);
+                border-radius: 15px;
+              }
+            title: "${'WD2 - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.wd2_state'].state + ' (' + states['sensor.wd2_size'].state) + ' GB)'}"
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.wd2_used
+                    title: Spazio usato
+                    max: 466
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 150
+                    - color: Orange
+                      from: 150
+                      to: 300
+                    - color: red
+                      from: 300
+                      to: 466
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.wd2_avail_space
+                    title: Spazio disponibile
+                    max: 466
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 150
+                    - color: Orange
+                      from: 150
+                      to: 300
+                    - color: red
+                      from: 300
+                      to: 466
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:config-template-card"
+                    entities:
+                      - sensor.wd_state
+                      - input_boolean.server_control_on_off
+                    card:
+                      type: entities
+                      show_header_toggle: false
+                      entities:
+                        - entity: sensor.wd2_usage_percent
+                          name: Percentuale utilizzo
+                          icon: mdi:harddisk
+                        - type: button
+                          name: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'Accendi tutto':(states['sensor.wd2_state'].state === 'Montato' ? 'Smonta':'Monta')}"
+                          tap_action:
+                            action: call-service
+                            service: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'script.call_service_server_turn_on':(states['sensor.wd2_state'].state === 'Montato' ? 'script.umount_wd2':'script.mount_wd2')}"
         - break
-        - type: custom:vertical-stack-in-card
-          title: Toshiba
-          cards:
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.toshiba_usage_percent
-                  title: Utilizzo
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 40
-                  - color: Orange
-                    from: 40
-                    to: 80
-                  - color: red
-                    from: 80
-                    to: 100
-                - type: entities
-                  show_header_toggle: false
-                  entities:
-                    - entity: sensor.toshiba_size
-                      name: Dimensione
-                      icon: mdi:harddisk
-                    - entity: sensor.toshiba_state
-                      name: Stato
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.toshiba_used
-                  title: Spazio usato
-                  max: 932
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 300
-                  - color: Orange
-                    from: 300
-                    to: 600
-                  - color: red
-                    from: 600
-                    to: 932
-                - type: 'custom:bar-card'
-                  entity: sensor.toshiba_avail_space
-                  title: Spazio disponibile
-                  max: 932
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 300
-                  - color: Orange
-                    from: 300
-                    to: 600
-                  - color: red
-                    from: 600
-                    to: 932
-        - type: custom:vertical-stack-in-card
-          title: Hitachi
-          cards:
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.hitachi_usage_percent
-                  title: Utilizzo
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 40
-                  - color: Orange
-                    from: 40
-                    to: 80
-                  - color: red
-                    from: 80
-                    to: 100
-                - type: entities
-                  show_header_toggle: false
-                  entities:
-                    - entity: sensor.hitachi_size
-                      name: Dimensione
-                      icon: mdi:harddisk
-                    - entity: sensor.hitachi_state
-                      name: Stato
-            - type: horizontal-stack
-              cards:
-                - type: 'custom:bar-card'
-                  entity: sensor.hitachi_used
-                  title: Spazio usato
-                  max: 233
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 100
-                  - color: Orange
-                    from: 100
-                    to: 200
-                  - color: red
-                    from: 200
-                    to: 233
-                - type: 'custom:bar-card'
-                  entity: sensor.hitachi_avail_space
-                  title: Spazio disponibile
-                  max: 233
-                  positions:
-                    icon: 'off'
-                    name: 'off'
-                  severity:
-                  - color: green
-                    from: 0
-                    to: 100
-                  - color: Orange
-                    from: 100
-                    to: 200
-                  - color: red
-                    from: 200
-                    to: 233
+        - type: "custom:config-template-card"
+          entities:
+            - sensor.toshiba_state
+            - input_boolean.server_control_on_off
+          card:
+            type: custom:vertical-stack-in-card
+            style: |
+              ha-card {
+                background: rgba(0,0,0,0.);
+                border-radius: 15px;
+              }
+            title: "${'Toshiba - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.toshiba_state'].state + ' (' + states['sensor.toshiba_size'].state) + ' GB)'}"
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.toshiba_used
+                    title: Spazio usato
+                    max: 932
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 300
+                    - color: Orange
+                      from: 300
+                      to: 600
+                    - color: red
+                      from: 600
+                      to: 932
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.toshiba_avail_space
+                    title: Spazio disponibile
+                    max: 932
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 300
+                    - color: Orange
+                      from: 300
+                      to: 600
+                    - color: red
+                      from: 600
+                      to: 932
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:config-template-card"
+                    entities:
+                      - sensor.wd_state
+                      - input_boolean.server_control_on_off
+                    card:
+                      type: entities
+                      show_header_toggle: false
+                      entities:
+                        - entity: sensor.toshiba_usage_percent
+                          name: Percentuale utilizzo
+                          icon: mdi:harddisk
+                        - type: button
+                          name: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'Accendi tutto':(states['sensor.toshiba_state'].state === 'Montato' ? 'Smonta':'Monta')}"
+                          tap_action:
+                            action: call-service
+                            service: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'script.call_service_server_turn_on':(states['sensor.toshiba_state'].state === 'Montato' ? 'script.umount_toshiba':'script.mount_toshiba')}"
+        - type: "custom:config-template-card"
+          entities:
+            - sensor.hitachi_state
+            - input_boolean.server_control_on_off
+          card:
+            type: custom:vertical-stack-in-card
+            style: |
+              ha-card {
+                background: rgba(0,0,0,0.);
+                border-radius: 15px;
+              }
+            title: "${'Hitachi - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.hitachi_state'].state + ' (' + states['sensor.hitachi_size'].state) + ' GB)'}"
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.hitachi_used
+                    title: Spazio usato
+                    max: 233
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 100
+                    - color: Orange
+                      from: 100
+                      to: 200
+                    - color: red
+                      from: 200
+                      to: 233
+              - type: horizontal-stack
+                cards:
+                  - type: 'custom:bar-card'
+                    entity: sensor.hitachi_avail_space
+                    title: Spazio disponibile
+                    max: 233
+                    positions:
+                      icon: 'off'
+                      name: 'off'
+                    severity:
+                    - color: green
+                      from: 0
+                      to: 100
+                    - color: Orange
+                      from: 100
+                      to: 200
+                    - color: red
+                      from: 200
+                      to: 233
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:config-template-card"
+                    entities:
+                      - sensor.hitachi_state
+                      - input_boolean.server_control_on_off
+                    card:
+                      type: entities
+                      show_header_toggle: false
+                      entities:
+                        - entity: sensor.hitachi_usage_percent
+                          name: Percentuale utilizzo
+                          icon: mdi:harddisk
+                        - type: button
+                          name: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'Accendi tutto':(states['sensor.hitachi_state'].state === 'Montato' ? 'Smonta':'Monta')}"
+                          tap_action:
+                            action: call-service
+                            service: "${ states['input_boolean.server_control_on_off'].state === 'off' ? 'script.call_service_server_turn_on':(states['sensor.hitachi_state'].state === 'Montato' ? 'script.umount_hitachi':'script.mount_hitachi')}"
         - break
 ####################################################
 #                                                  #
