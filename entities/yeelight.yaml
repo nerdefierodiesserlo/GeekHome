@@ -1,6 +1,6 @@
   devices:
-    192.168.1.101:
+    192.168.1.xxx:
       name: Comodino
       model: bslamp1
-    192.168.1.120:
+    192.168.1.xxx:
       name: Divano
