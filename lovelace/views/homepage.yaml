@@ -79,26 +79,6 @@
               icon: mdi:restart
               tap_action:
                 action: toggle
-        # - type: glance
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   title: Prese wifi
-        #   show_state: false
-        #   entities:
-        #     - entity: switch.scrivania
-        #       icon: mdi:desk-lamp
-        #       tap_action:
-        #         action: toggle
-        #     - entity: switch.outlet_b44d
-        #       name: Presa Server
-        #       tap_action:
-        #         action: toggle
-        #     - entity: switch.seconda_presa
-        #       tap_action:
-        #         action: toggle
         - type: entities
           style: |
             ha-card {
@@ -108,8 +88,6 @@
           entities:
             - entity: sensor.dark_sky_temperature
             - entity: sensor.dark_sky_humidity
-            #- entity: sensor.temperature_and_humidity_sensor_6d4d_temperature #umberto
-            #- entity: sensor.temperature_and_humidity_sensor_6d4d_humidity  #umberto
             - entity: sensor.temperature_and_humidity_sensor_dc21_temperature
             - entity: sensor.temperature_and_humidity_sensor_dc21_humidity
             - entity: sensor.temperature_and_humidity_sensor_6d4d_temperature
@@ -136,10 +114,6 @@
               entities:
                 - entity: switch.outlet_b44d
                   name: Presa Server
-                #- entity: switch.scrivania
-                #  icon: mdi:desk-lamp
-                #- entity: switch.xiaomi_wifi
-                #- entity: switch.seconda_presa
             - type: custom:fold-entity-row
               open: false
               head:
@@ -147,9 +121,9 @@
                 label: Luci
               entities:
                 - group.luci_camera_group
-                - light.shelly_shsw_1_55dfe4  #luce camera
-                - light.shelly_shsw_1_76f7d1  #luce scale
-                - light.shelly_shsw_1_7703e4  #luce bagno
+                - light.shelly_shsw_1_xxxxx  #luce camera
+                - light.shelly_shsw_1_xxxxx  #luce scale
+                - light.shelly_shsw_1_xxxxx  #luce bagno
                 - light.comodino
                 - light.divano
             - type: custom:fold-entity-row
@@ -250,132 +224,6 @@
           entity: climate.controllo_temperatura_rpi
           name: Controllo Temperatura RPi
         - break
-        # - type: entities
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   title: Info & TTS
-        #   show_header_toggle: false
-        #   entities:
-        #     - type: custom:fold-entity-row
-        #       open: false
-        #       head:
-        #         type: section
-        #         label: Batteria dispositivi
-        #       entities:
-        #         - sensor.0x00158d00032699e9_battery
-        #         - sensor.0x00158d000223e3f5_battery
-        #         - sensor.0x00158d00027de0c8_battery
-        #     - type: custom:fold-entity-row
-        #       open: false
-        #       head:
-        #         type: section
-        #         label: Temperatura e umidità
-        #       entities:
-        #         - entity: sensor.dark_sky_temperature
-        #         - entity: sensor.dark_sky_humidity
-        #         - entity: sensor.temperature_and_humidity_sensor_dc21_temperature
-        #         - entity: sensor.temperature_and_humidity_sensor_dc21_humidity
-        #         - entity: sensor.temperature_and_humidity_sensor_6d4d_temperature
-        #         - entity: sensor.temperature_and_humidity_sensor_6d4d_humidity
-        # - type: entities
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   entities:
-        #     - entity: sensor.temperature_and_humidity_sensor_dc21_temperature
-        #       name: Temperatura esterna
-        #     - entity: sensor.temperature_and_humidity_sensor_dc21_humidity
-        #       name: Umidità esterna
-        #     - entity: sensor.temperature_and_humidity_sensor_6d4d_temperature
-        #       name: Temperatura camera
-        #     - entity: sensor.temperature_and_humidity_sensor_6d4d_humidity
-        #       name: Umidità camera
-        # - type: custom:mini-graph-card
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   name: Temperatura esterna
-        #   hours_to_show: 48
-        #   hour24: true
-        #   entities:
-        #   - sensor.temperature_and_humidity_sensor_dc21_temperature
-        #   show:
-        #     labels: true
-        #   color_thresholds:
-        #     - value: 25
-        #       color: "#f39c12"
-        #     - value: 23
-        #       color: "#d35400"
-        #     - value: 20
-        #       color: "#c0392b"
-        # - type: custom:mini-graph-card
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   name: Umidità esterna
-        #   hours_to_show: 48
-        #   hour24: true
-        #   entities:
-        #   - sensor.temperature_and_humidity_sensor_dc21_humidity
-        #   show:
-        #     labels: true
-        #   color_thresholds:
-        #     - value: 30
-        #       color: "#12ecf3"
-        #     - value: 60
-        #       color: "#1295f3"
-        #     - value: 80
-        #       color: "#124ef3"
-        # - type: custom:mini-graph-card
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   name: Temperatura camera
-        #   hours_to_show: 48
-        #   hour24: true
-        #   entities:
-        #   - sensor.temperature_and_humidity_sensor_6d4d_temperature
-        #   show:
-        #     labels: true
-        #   color_thresholds:
-        #     - value: 25
-        #       color: "#f39c12"
-        #     - value: 23
-        #       color: "#d35400"
-        #     - value: 20
-        #       color: "#c0392b"
-        # - type: custom:mini-graph-card
-        #   style: |
-        #     ha-card {
-        #       background: rgba(0,0,0,0.);
-        #       border-radius: 15px;
-        #     }
-        #   name: Umidità camera
-        #   hours_to_show: 48
-        #   hour24: true
-        #   entities:
-        #   - sensor.temperature_and_humidity_sensor_6d4d_humidity
-        #   show:
-        #     labels: true
-        #   color_thresholds:
-        #     - value: 30
-        #       color: "#12ecf3"
-        #     - value: 60
-        #       color: "#1295f3"
-        #     - value: 80
-        #       color: "#124ef3"
-
 ####################################################
 #                                                  #
 #            END OF CONFIGURATION FILE             #
