@@ -123,8 +123,8 @@
         value_template: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
       last_alexa:
         entity_id:
-          - media_player.echo_dot_di_patrizia
-          - media_player.echo_dot_di_umberto
+          - media_player.echo_dot_di_xxxxxx
+          - media_player.echo_dot_di_xxxxxx
         value_template: >
           {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
 #################################################################################################
