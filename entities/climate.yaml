@@ -1,7 +1,7 @@
 #termostato virtuale
 #   - platform: generic_thermostat
 #     name: Termostato Umberto
-#     heater: switch.shelly_shsw_1_76887f  #termostato
+#     heater: switch.shelly_shsw_1_xxxxx  #termostato
 #     target_sensor: sensor.temperature_and_humidity_sensor_6d4d_temperature
 #     min_temp: 15
 #     max_temp: 21
