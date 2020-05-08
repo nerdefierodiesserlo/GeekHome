@@ -27,21 +27,3 @@ zigbee_remove:
       data_template:
         topic: "zigbee2mqtt/bridge/config/remove"
         payload: "{{ states('input_text.remove_sensor') }}" 
-
-update_hd_stats:
-  alias: update_hd_stats
-  sequence:
-    - service: homeassistant.update_entity
-      data:
-        entity_id:
-        - sensor.hitachi_rest
-        - sensor.wd_rest
-        - sensor.wd2_rest
-        - sensor.toshiba_rest
-update_smb_status:
-  alias: update_smb_status
-  sequence:
-    - service: homeassistant.update_entity
-      data:
-        entity_id:
-        - sensor.smb_status_rest
