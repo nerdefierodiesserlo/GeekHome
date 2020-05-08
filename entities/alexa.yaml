@@ -29,11 +29,11 @@
         - switch.computer_wifi_wol
         - switch.laptop_wol
         - switch.pi_zero_wol
-        - switch.shelly_shsw_1_55dfe4
-        - switch.shelly_shsw_1_76887f
-        - switch.shelly_shsw_1_76f7d1
-        - switch.shelly_shsw_1_7703e4
-        - media_player.echo_dot_di_patrizia
+        - switch.shelly_shsw_1_XXXXX
+        - switch.shelly_shsw_1_XXXXX
+        - switch.shelly_shsw_1_XXXXX
+        - switch.shelly_shsw_1_XXXXX
+        - media_player.echo_dot_di_xxxxxx
         - script.increase_brightness_check
         - script.increase_brightness
         - script.turn_on_to_increase
