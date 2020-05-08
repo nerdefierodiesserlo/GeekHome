@@ -8,20 +8,6 @@
   path: gdrive_menu
   badges: []
   cards:
-    # - type: entities
-    #   style: |
-    #     ha-card {
-    #       background: rgba(0,0,0,0.);
-    #       border-radius: 15px;
-    #     }
-    #   entities:
-    #     - input_boolean.gdrive_backup
-    #     - input_boolean.gdrive_sync_completed
-    #     - input_datetime.gdrive_backup_time
-    #     - input_select.gdrive_backup_day
-    #     - input_text.gdrive_backup_status
-    #     - input_number.gdrive_ritardo_upload
-    #     - input_boolean.manual_backup
     - type: entities
       style: |
         ha-card {
