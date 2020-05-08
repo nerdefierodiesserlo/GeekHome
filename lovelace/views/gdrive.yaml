@@ -23,6 +23,11 @@
     #     - input_number.gdrive_ritardo_upload
     #     - input_boolean.manual_backup
     - type: entities
+      style: |
+        ha-card {
+        background: rgba(0,0,0,0.);
+        border-radius: 15px;
+      }
       entities:
         - input_boolean.gdrive_backup
         - input_boolean.gdrive_sync_completed
