@@ -13,13 +13,26 @@
 #     keep_alive:
 #       minutes: 3
 #     initial_hvac_mode: "off"
+  - platform: generic_thermostat
+    name: Controllo Temperatura RPI
+    heater: switch.switch_ventola
+    target_sensor: sensor.cpu_temperature
+    min_temp: 35
+    max_temp: 70
+    ac_mode: true
+    target_temp: 55
+    cold_tolerance: 5
+    hot_tolerance: 2
+    min_cycle_duration:
+      minutes: 10
+    initial_hvac_mode: "cool"
   - platform: floureon
     name: Termostato primo piano
     mac: "xx:xx:xx:xx:xx:xx"
-    host: 192.168.1.149
+    host: 192.168.1.xxx
     use_external_temp: false
   - platform: floureon
     name: Termostato mansarda
     mac: "xx:xx:xx:xx:xx:xx"
-    host: 192.168.1.150
+    host: 192.168.1.xxx
     use_external_temp: false
