@@ -12,6 +12,12 @@
 #     mac: !secret broadlink_mac
 #     type: sp2
 #     friendly_name: Seconda Presa
+
+switch:
+  - platform: rpi_gpio
+    ports:
+      18: Switch Ventola
+      
   - platform: wake_on_lan
     name: computer_lan_wol
     mac: !secret computer_mac
