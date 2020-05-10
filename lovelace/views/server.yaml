@@ -70,7 +70,7 @@
             - input_boolean.server_control_on_off
           card:
             type: custom:vertical-stack-in-card
-            title: "${'WD - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.wd_state'].state + ' (' + states['sensor.wd_size'].state) + ' GB)'}"
+            title: "${'WD - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':(states['sensor.wd_state'].state + ' (' + states['sensor.wd_size'].state) + ' GB)')}"
             style: |
               ha-card {
                 background: rgba(0,0,0,0.);
@@ -144,7 +144,7 @@
                 background: rgba(0,0,0,0.);
                 border-radius: 15px;
               }
-            title: "${'WD2 - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.wd2_state'].state + ' (' + states['sensor.wd2_size'].state) + ' GB)'}"
+            title: "${'WD2 - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':(states['sensor.wd2_state'].state + ' (' + states['sensor.wd2_size'].state) + ' GB)')}"
             cards:
               - type: horizontal-stack
                 cards:
@@ -214,7 +214,7 @@
                 background: rgba(0,0,0,0.);
                 border-radius: 15px;
               }
-            title: "${'Toshiba - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.toshiba_state'].state + ' (' + states['sensor.toshiba_size'].state) + ' GB)'}"
+            title: "${'Toshiba - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':(states['sensor.toshiba_state'].state + ' (' + states['sensor.toshiba_size'].state) + ' GB)')}"
             cards:
               - type: horizontal-stack
                 cards:
@@ -283,7 +283,7 @@
                 background: rgba(0,0,0,0.);
                 border-radius: 15px;
               }
-            title: "${'Hitachi - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':states['sensor.hitachi_state'].state + ' (' + states['sensor.hitachi_size'].state) + ' GB)'}"
+            title: "${'Hitachi - ' + (states['input_boolean.server_control_on_off'].state === 'off' ?'Spento':(states['sensor.hitachi_state'].state + ' (' + states['sensor.hitachi_size'].state) + ' GB)')}"
             cards:
               - type: horizontal-stack
                 cards:
