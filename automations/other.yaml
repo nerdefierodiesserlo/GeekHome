@@ -73,16 +73,3 @@
 #   - service: switch.toggle
 #     data:
 #       entity_id: switch.scrivania
-# ###########################   CIABATTA ON/OFF   ###############################
-# - alias: test
-#   trigger:
-#     - platform: state
-#       entity_id: switch.scrivania
-#       from: 'off'
-#       to: 'on'
-#   action:
-#   - service: notify.alexa_media_echo_dot_di_patrizia
-#     data:
-#       message: "ciao"
-#       data:
-#         type: tts
