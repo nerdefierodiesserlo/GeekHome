@@ -1,49 +1,4 @@
-alexa_poweron_server_script:
-  alias: Alexa avvisa server acceso
-  sequence:
-    - service: media_player.volume_set
-      data_template: 
-        entity_id: '{{ states.sensor.last_alexa.state }}' 
-        volume_level: '0.2'
-    - delay: '00:00:01'
-    - service: notify.alexa_media
-      data_template:
-        target: '{{ states.sensor.last_alexa.state }}' 
-        message: >
-          {% if is_state('input_boolean.alexa_check_server_state', 'on') and is_state('input_boolean.alexa_tts_on_off', 'on')%}
-            "Il Server è già acceso, se non funziona prova a chiedermi: riavvia server"
-          {% else %}
-            {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
-              {{ [
-                  "Va bene, che la forza sia con te",
-                  "Va bene, lunga vita e prosperità",
-                  "Motori avanti tutta",
-                  "Consideralo già fatto",
-                  "Ogni tuo desiderio è un ordine",
-                  "Lo faccio subito, ma non hai detto per favore",
-                  "Senza di me non sapresti più che fare. E io senza di te non mi divertirei più. Ecco perché non ci uccideremo mai.",
-                  "Roger comandante",
-                  "Capo pattuglia chiama Corvo, eseguo",
-                  "In città sei tu la legge, qua sono io",
-                  "O muori da eroe o vivi tanto a lungo da diventare il cattivo",
-                  "Non è tanto chi sono, quanto quello che faccio, che mi qualifica",
-                  "Energia",
-                  "abracadabra",
-                  "Io ti spiezzo in due",
-                  "Rambo, cosa gli rispondiamo? Fanculo",
-                  "La capacità di parlare non fa di te un essere intelligente"
-                ] | random }}
-            {% else %}
-              ""
-            {% endif %}
-          {% endif %}
-        data:
-          type: "tts"
-    - delay: '00:00:10'
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.alexa_check_server_state
-          
+
 poweroff_server_script:
   alias: Spegni server
   sequence:
@@ -61,48 +16,6 @@ poweroff_server_script:
     - service: input_boolean.turn_off
       data:
         entity_id: input_boolean.alexa_check_server_state
-
-alexa_poweroff_server_script:
-  alias: Alexa avvisa server spento
-  sequence:
-    - service: media_player.volume_set
-      data_template: 
-        entity_id: '{{ states.sensor.last_alexa.state }}' 
-        volume_level: '0.2'
-    - delay: '00:00:01'
-    - service: notify.alexa_media
-      data_template:
-        target: '{{ states.sensor.last_alexa.state }}' 
-        message: >
-          {% if is_state('input_boolean.alexa_check_server_state', 'off') and is_state('input_boolean.alexa_tts_on_off', 'on')%}
-            "Tranquillo il Server è già spento"
-          {% else %}
-            {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
-              {{ [
-                  "Va bene, che la forza sia con te",
-                  "Va bene, lunga vita e prosperità",
-                  "Va bene, spero che il film ti sia piaciuto",
-                  "Consideralo già fatto",
-                  "Ogni tuo desiderio è un ordine",
-                  "Lo faccio subito, ma non ho sentito per favore",
-                  "Lascia fare a me",
-                  "Roger comandante",
-                  "Capo pattuglia chiama Corvo, eseguo",
-                  "In città sei tu la legge, qua sono io...fatto",
-                  "Affermativo, scateno l'inferno",
-                  "Non è tanto chi sono, quanto quello che faccio che mi qualifica",
-                  "Energia",
-                  "No problem",
-                  "Io ti spiezzo in due",
-                  "Rambo, cosa gli rispondiamo? Fanculo"
-                ] | random }}
-            {% else %}
-              ""
-            {% endif %}
-          {% endif %}
-        data:
-          type: "tts"
-    - delay: '00:00:10'
         
 do_not_poweroff_server_script:
   alias: Non spegnere Server
