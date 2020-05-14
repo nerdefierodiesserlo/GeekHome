@@ -3,7 +3,6 @@ sensor:
     sensors:
       sensore_virtuale:
         friendly_name: "porta finestra"
-        entity_id: sensor.porta_finestra
         value_template: >
           {% if is_state('switch.sensore_laser', 'on') %}
             "chiusa"  
