@@ -1,5 +1,6 @@
   smart_home:
     filter:
+    #domini da esporre ad alexa (tutte le entità di questi domini verranno aggiunte)
       include_domains:
         - switch
         - light
@@ -7,6 +8,7 @@
         - sensor
         - script
         - input_boolean
+    #singole entità da non esporre
       exclude_entities:
         - input_boolean.server
         - input_boolean.reboot_button
@@ -63,7 +65,7 @@
         - script.zigbee_remove
         - script.poweroff_server_script
         - script.do_not_poweroff_server_script
-        
+#personalizzazione di alcune entità
     entity_config:
       light.divano:
         name: Luce divano
