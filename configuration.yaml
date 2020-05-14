@@ -7,12 +7,12 @@ default_config:
 zeroconf:
 
 ################################################################################
-
+#abilita la modalità yaml
 lovelace:
   mode: yaml
 
 ################################################################################
-
+#abilita i temi
 frontend:
   themes: !include_dir_merge_named themes
   javascript_version: auto
@@ -20,6 +20,7 @@ frontend:
 ###############################   DEFAULT   ####################################
 
 homeassistant:
+#abilita l'uso dei pachetti
   packages: !include_dir_named packages
   whitelist_external_dirs:
     - /config
@@ -94,12 +95,13 @@ rest_command:
   umount_hitachi:
     url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_hitachi'
 #########################   TELEGRAM   #########################################
-
+#configura bot di telegram
 telegram_bot:
   - platform: polling
     api_key: !secret telegram_bot_api
     allowed_chat_ids:
       - !secret telegram_chat_id
+#definisce i servizi di notifica tramite telegram e tramite alexa
 notify:
   - name: notifiche
     platform: telegram
