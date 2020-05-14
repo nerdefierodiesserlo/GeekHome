@@ -9,3 +9,11 @@ sensor:
           {% else %}
             "aperta"
           {% endif %}
+      sensore_virtuale2:
+        friendly_name: "porta finestra 2"
+        value_template: >
+          {% if is_state('switch.sensore_laser', 'on') %}
+            "chiusa"  
+          {% else %}
+            "aperta"
+          {% endif %}
