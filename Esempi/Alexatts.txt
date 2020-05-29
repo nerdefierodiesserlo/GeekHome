@@ -1,0 +1,102 @@
+notify:
+  - platform: alexa_media
+    name: alexa_media
+
+############################################################
+
+  - platform: template
+    sensor:
+      last_alexa:
+        entity_id:
+          - media_player.echo_dot_di_xxxxxx
+          - media_player.echo_dot_di_xxxxxx
+        value_template: >
+          {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+
+############################################################
+
+alexa_tts_test:
+  alias: Alexa esegue test
+  sequence:
+    - service: media_player.volume_set
+      data: 
+        entity_id: 'media_player.echo_dot_di_umberto' 
+        volume_level: '0.2'
+    - delay:
+        seconds: 0.5 
+    - service: notify.alexa_media
+      data:
+        target: 'media_player.echo_dot_di_umberto' 
+        message: "questo è un messaggio di prova"
+        data:
+          type: "tts"
+
+############################################################
+
+alexa_tts_test2:
+  alias: Alexa esegue test2
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}'
+        volume_level: '0.2'
+    - delay:
+        seconds: 0.5 
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}'
+        message: "questo è un messaggio di prova"
+        data:
+          type: "tts"
+
+############################################################
+
+alexa_tts_test3:
+  alias: Alexa esegue test3
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}'
+        volume_level: '0.2'
+    - delay:
+        seconds: 0.5 
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}'
+        message: >
+          {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            "dato che è true eseguo il messaggio di prova"
+          {% else %}
+            ""
+          {% endif %}
+        data:
+          type: "tts"
+
+############################################################
+
+alexa_tts_test4:
+  alias: Alexa esegue test4
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}'
+        volume_level: '0.2'
+    - delay:
+        seconds: 0.5 
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}'
+        message: >
+          {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            {{ [
+                "Eseguo frase uno",
+                "Eseguo frase due",
+                "Eseguo frase tre",
+                "Eseguo frase quattro",
+                "Eseguo frase cinque"
+              ] | random }}
+          {% else %}
+            ""
+          {% endif %}
+        data:
+          type: "tts"
