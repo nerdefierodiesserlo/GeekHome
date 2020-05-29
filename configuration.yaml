@@ -7,12 +7,58 @@ default_config:
 zeroconf:
 
 ################################################################################
-#abilita la modalità yaml
+
 lovelace:
   mode: yaml
+####################################################
+#                                                  #
+#                  RESOURCES                       #
+#                                                  #
+####################################################
+  resources:
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /hacsfiles/gauge-card/gauge-card.js
+      type: js
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /hacsfiles/lovelace-battery-entity/battery-entity.js?v=0.2
+      type: module
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js?track=true
+      type: js
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/lovelace-fold-entity-row/fold-entity-row.js
+      type: module
+    - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
+      type: module
+    - url: /hacsfiles/text-divider-row/text-divider-row.js
+      type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js?v=0.3.2
+      type: js
+    - url: /hacsfiles/lovelace-card-templater/lovelace-card-templater.js
+      type: js
+    - url: /hacsfiles/bar-card/bar-card.js
+      type: module
+    - url: /hacsfiles/config-template-card/config-template-card.js
+      type: module
+    - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
+      type: module
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
 
+####################################################
+    - url: /hacsfiles/monster-card/monster-card.js
+      type: js
+    - url: /hacsfiles/simple-thermostat/simple-thermostat.js?v=1
+      type: module
+    - url: /hacsfiles/popup-card/popup-card.js?track=true
+      type: js
+#lovelace: !include /config/lovelace.yaml 
 ################################################################################
-#abilita i temi
+
 frontend:
   themes: !include_dir_merge_named themes
   javascript_version: auto
@@ -20,7 +66,6 @@ frontend:
 ###############################   DEFAULT   ####################################
 
 homeassistant:
-#abilita l'uso dei pachetti
   packages: !include_dir_named packages
   whitelist_external_dirs:
     - /config
@@ -56,7 +101,7 @@ http:
   base_url: !secret http_base_url
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
-  ip_ban_enabled: True
+  ip_ban_enabled: False
   login_attempts_threshold: 5
   
       
@@ -66,46 +111,49 @@ ifttt:
   key: !secret ifttt_key
   
 rest_command:
+  reboot_retropie:
+    url: 'http://192.168.1.118:1234/rest/reboot'
+  poweroff_retropie:
+    url: 'http://192.168.1.118:1234/rest/poweroff'
   mount_hd:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mountHD'
+    url: 'http://192.168.1.14:1234/hassio/nas/mountHD'
   umount_hd:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umountHD'
+    url: 'http://192.168.1.14:1234/hassio/nas/umountHD'
   reboot_server:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/reboot'
+    url: 'http://192.168.1.14:1234/hassio/nas/reboot'
   poweroff_server:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/poweroff'
+    url: 'http://192.168.1.14:1234/hassio/nas/poweroff'
   mount_wd:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd'
+    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd'
   umount_wd:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd'
+    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd'
   mount_wd2:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd2'
+    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd2'
   umount_wd2:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd2'
+    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd2'
   mount_w3:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_wd3'
+    url: 'http://192.168.1.14:1234/hassio/nas/mount_wd3'
   umount_w3:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_wd3'
+    url: 'http://192.168.1.14:1234/hassio/nas/umount_wd3'
   mount_toshiba:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_toshiba'
+    url: 'http://192.168.1.14:1234/hassio/nas/mount_toshiba'
   umount_toshiba:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_toshiba'
+    url: 'http://192.168.1.14:1234/hassio/nas/umount_toshiba'
   mount_hitachi:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/mount_hitachi'
+    url: 'http://192.168.1.14:1234/hassio/nas/mount_hitachi'
   umount_hitachi:
-    url: 'http://192.168.1.xxx:xxxx/hassio/nas/umount_hitachi'
+    url: 'http://192.168.1.14:1234/hassio/nas/umount_hitachi'
 #########################   TELEGRAM   #########################################
-#configura bot di telegram
+
 telegram_bot:
   - platform: polling
     api_key: !secret telegram_bot_api
     allowed_chat_ids:
-      - !secret telegram_chat_id
-#definisce i servizi di notifica tramite telegram e tramite alexa
+      - !secret telegram_chat_id_u
 notify:
-  - name: notifiche
+  - name: notifiche_u
     platform: telegram
-    chat_id: !secret telegram_chat_id
+    chat_id: !secret telegram_chat_id_u
   - platform: alexa_media
     name: alexa_media
       
@@ -124,14 +172,30 @@ sensor: !include /config/entities/sensor.yaml
 switch: !include /config/entities/switch.yaml
 timer: !include /config/entities/timer.yaml
 yeelight: !include /config/entities/yeelight.yaml
+
+input_text:
+  alexa_actionable_notification:
+    name: Alexa Actionable Notification Holder
+    max: 255
+    initial: '{"text": "This is a test of the alexa actions custom skill. Did it work?", "event": "actionable.skill.test"}'
+    
+media_player:
+  - platform: androidtv
+    name: Fire TV Stick
+    device_class: firetv
+    host: 192.168.1.116
+    adb_server_ip: 127.0.0.1
+    adb_server_port: 5037
+    
 #############################   SHELL   ########################################
+
+shell_command:
 
 #########################   DISCOVERY   ########################################
 
 discovery:
   ignore:
     - yeelight
-    - igd
     - xiaomi_gw
 
 shelly:
@@ -148,7 +212,7 @@ shelly:
     - id: "xxxxx"
       light_switch: true
       name: Luce camera
+    # - id: "xxxxx"
+    #   name: Switch termostato
 api:
 alexa: !include /config/entities/alexa.yaml
-
-    
