@@ -1,51 +1,171 @@
-#   - platform: xiaomi_miio
-#     name: Xiaomi Wifi
-#     host: 192.168.1.xxx
-#     token: !secret token_xiaomi_plug
-#     model: chuangmi.plug.m3
-#   - platform: xiaomi_miio
-#     name: Scrivania
-#     host: 192.168.1.xxx
-#     token: !secret token_xiaomi_strip
-#   - platform: broadlink
-#     host: 192.168.1.xxx
-#     mac: !secret broadlink_mac
-#     type: sp2
-#     friendly_name: Seconda Presa
+  - platform: broadlink
+    host: 192.168.1.102
+    mac: !secret broadlink_mac
+    type: sp2
+    friendly_name: Seconda Presa
 
-switch:
   - platform: rpi_gpio
     ports:
-      18: Switch Ventola
+      4: Switch Ventola
       
+  - platform: broadlink
+    host: 192.168.1.115
+    mac: !secret rm_mini3
+    type: rm_mini
+    timeout: 15
+    switches:
+      tv_samsung_mansarda_power:
+        friendly_name: "Tv mansarda power"
+        command_on: 'JgBGAJKVDzsQOhA6EBUQFRAVERQRFBE5EDoSOBEUERQRFBAVEBURFBE5ERQRFBAVERQRFBEUETkRFBE5ETkRORE5EToQOg8ADQUAAA=='
+        command_off: 'JgBGAJKVDzsQOhA6EBUQFRAVERQRFBE5EDoSOBEUERQRFBAVEBURFBE5ERQRFBAVERQRFBEUETkRFBE5ETkRORE5EToQOg8ADQUAAA=='
+      tv_samsung_mansarda_up:
+        friendly_name: "Tv mansarda up"
+        command_on: 'JgBGAJGWEDwNOw88DxQQFg8WDxYPFg86ETkROw8VEBYPFQ8XEBUOFhEVDhYPFhEVDzoROBEVDzsQOw86EDkROhAWDhYPPA4ADQUAAA=='
+        command_off: 'JgBGAJGWEDwNOw88DxQQFg8WDxYPFg86ETkROw8VEBYPFQ8XEBUOFhEVDhYPFhEVDzoROBEVDzsQOw86EDkROhAWDhYPPA4ADQUAAA=='
+      tv_samsung_mansarda_down:
+        friendly_name: "Tv mansarda down"
+        command_on: 'JgBEAJCWCEQNPQ09DRkMFw8YDRoKGA09DUEKPQwXDjsPGgoZCz8OIQYUDhgNHAk8DEEMFgscDTwNOw9BCkAJFg8YDTwOAA0FAAAAAA=='
+        command_off: 'JgBEAJCWCEQNPQ09DRkMFw8YDRoKGA09DUEKPQwXDjsPGgoZCz8OIQYUDhgNHAk8DEEMFgscDTwNOw9BCkAJFg8YDTwOAA0FAAAAAA=='
+      tv_samsung_mansarda_left:
+        friendly_name: "Tv mansarda left"
+        command_on: 'JgBAAB4FBAgJDgsQDRATnwiKCEEKFwYgDEEJYg2yCBgNGQwfBiAHPQeLCB4LiwoaCRwJQgofB0AKPwgdChsKPwkADQUAAAAAAAAAAA=='
+        command_off: 'JgBAAB4FBAgJDgsQDRATnwiKCEEKFwYgDEEJYg2yCBgNGQwfBiAHPQeLCB4LiwoaCRwJQgofB0AKPwgdChsKPwkADQUAAAAAAAAAAA=='
+      tv_samsung_mansarda_right:
+        friendly_name: "Tv mansarda right"
+        command_on: 'JgBGAI2YEDsMPw47DhgOFQ8YDhcNFw47DzsPPBEVDRcOFhAVEBcPFBE5EBYMGQ8WDjwOPQ0XDzsOFhE7DTwPOw4WDxYPOxAADQUAAA=='
+        command_off: 'JgBGAI2YEDsMPw47DhgOFQ8YDhcNFw47DzsPPBEVDRcOFhAVEBcPFBE5EBYMGQ8WDjwOPQ0XDzsOFhE7DTwPOw4WDxYPOxAADQUAAA=='
+      tv_samsung_mansarda_ok:
+        friendly_name: "Tv mansarda ok"
+        command_on: 'JgBGAJGXDzwMPQ49DhUQFg8WDxYQFBE6ETkPOhAWEBUPFg8WDxYQFQ8WEBYOOhAWDzsSOA8WDzsQOxA4ERUPOxAVDxYQOg8ADQUAAA=='
+        command_off: 'JgBGAJGXDzwMPQ49DhUQFg8WDxYQFBE6ETkPOhAWEBUPFg8WDxYQFQ8WEBYOOhAWDzsSOA8WDzsQOxA4ERUPOxAVDxYQOg8ADQUAAA=='
+
+      tv_samsung_mansarda_channel_next:
+        friendly_name: "Tv mansarda channel next"
+        command_on: 'JgBGAJKVEDkROhE4EBUQFg4XDBkPFw86DzsQOg8WERQPFhAVEBUQFRA5ERUPFhA6DxYQFQ8WDzoRFQ87EDoRFBA5EToQOg8ADQUAAA=='
+        command_off: 'JgBGAJKVEDkROhE4EBUQFg4XDBkPFw86DzsQOg8WERQPFhAVEBUQFRA5ERUPFhA6DxYQFQ8WDzoRFQ87EDoRFBA5EToQOg8ADQUAAA=='
+      tv_samsung_mansarda_channel_prev:
+        friendly_name: "Tv mansarda channel prev"
+        command_on: 'JgBGAJKVEDoQOhA6ERQQFg8WDxYQFQ87EDoQOg8WDxcOFw8VDxcOFg8XDhYRFQ47EBUPFg8WDzsPPA87EDkRFBE5EjgQOhAADQUAAA=='
+        command_off: 'JgBGAJKVEDoQOhA6ERQQFg8WDxYQFQ87EDoQOg8WDxcOFw8VDxcOFg8XDhYRFQ47EBUPFg8WDzsPPA87EDkRFBE5EjgQOhAADQUAAA=='
+      tv_samsung_mansarda_volume_up:
+        friendly_name: "Tv mansarda up"
+        command_on: 'JgBGAJKVETkRORA6ERQRFBAVEBUQFRA7EDkROhAUERUQFRAUEBYQOhA6EDoPFhAVEBUQFQ8WEBUPFhAVEDoQOhA6EDoQOg8ADQUAAA=='
+        command_off: 'JgBGAJKVETkRORA6ERQRFBAVEBUQFRA7EDkROhAUERUQFRAUEBYQOhA6EDoPFhAVEBUQFQ8WEBUPFhAVEDoQOhA6EDoQOg8ADQUAAA=='
+      tv_samsung_mansarda_volume_down:
+        friendly_name: "Tv mansarda up"
+        command_on: 'JgBGAJKVEDoSOBE5EBUQFREUERQRFBA6EDoROREUEBURFBEUEBUQOhE5ERQROREUEBURFBAVEBUQFRE5ERQQOhE5EDoQOhAADQUAAA=='
+        command_off: 'JgBGAJKVEDoSOBE5EBUQFREUERQRFBA6EDoROREUEBURFBEUEBUQOhE5ERQROREUEBURFBAVEBUQFRE5ERQQOhE5EDoQOhAADQUAAA=='
+
+      tv_samsung_mansarda_hdmi_toggle:
+        friendly_name: "Tv mansarda hdmi toggle"
+        command_on: 'JgBGAJOUEjgSOBI4EhMSExITEhMSExI4EjgSOBITEhMSExITEhMSOBITEhMSExITEhMSExITEhMSOBI4EjgSOBI4EjgSOBIADQUAAA=='
+        command_off: 'JgBGAJOUEjgSOBI4EhMSExITEhMSExI4EjgSOBITEhMSExITEhMSOBITEhMSExITEhMSExITEhMSOBI4EjgSOBI4EjgSOBIADQUAAA=='
+      tv_samsung_mansarda_antenna:
+        friendly_name: "Tv mansarda hdmi antenna"
+        command_on: 'JgBGAJSTEjgSOBI4EhMSExITEhMSExI4EjgSNxMTEhQRFBEUERQRORE4EhQSExITEhMSOBITEhMSExI4EjgSOBI4EhMSOBIADQUAAA=='
+        command_off: 'JgBGAJSTEjgSOBI4EhMSExITEhMSExI4EjgSNxMTEhQRFBEUERQRORE4EhQSExITEhMSOBITEhMSExI4EjgSOBI4EhMSOBIADQUAAA=='      
+      tv_samsung_mansarda_hdmi1:
+        friendly_name: "Tv mansarda hdmi1"
+        command_on: 'JgBGAJKVETkRORE5ERQQFRAVERQQFRE5ETkROREUERQRFBEUERQRORAVERUPOxAVDzsQOhA6EBUQOhA6EBUQOhAVEBUPFhAADQUAAA=='
+        command_off: 'JgBGAJKVETkRORE5ERQQFRAVERQQFRE5ETkROREUERQRFBEUERQRORAVERUPOxAVDzsQOhA6EBUQOhA6EBUQOhAVEBUPFhAADQUAAA=='
+      tv_samsung_mansarda_hdmi2:
+        friendly_name: "Tv mansarda hdmi2"
+        command_on: 'JgBGAJOUETkRORA6ERQQFRAVERQRFBA6ETkROhAVDxYQFQ8WEBUQFQ87EDoRORA6DzsQFRA6DzsPFhAVDxYQFRAVEDoQFRAADQUAAA=='
+        command_off: 'JgBGAJOUETkRORA6ERQQFRAVERQRFBA6ETkROhAVDxYQFQ8WEBUQFQ87EDoRORA6DzsQFRA6DzsPFhAVDxYQFRAVEDoQFRAADQUAAA=='
+        
+################ WAKE ON LAN ####################################
+
+# PC LAN
   - platform: wake_on_lan
     name: computer_lan_wol
     mac: !secret computer_mac
-    host: 192.168.1.xxx
+    host: 192.168.1.139
     turn_off: 
       service: script.turn_off_pc_script
+# PC WIFI
   - platform: wake_on_lan
     name: computer_wifi_wol
     mac: !secret computer_mac
-    host: 192.168.1.xxx
+    host: 192.168.1.104
     turn_off: 
       service: script.turn_off_pc_wifi_script
+# LAPTOP WIFI
   - platform: wake_on_lan 
     name: laptop_wol
     mac: !secret laptop_mac
-    host: 192.168.1.xxx
+    host: 192.168.1.133
     turn_off: 
       service: script.turn_off_laptop_script
+# PI ZERO
   - platform: wake_on_lan 
     name: pi_zero_wol
     mac: !secret pi_zero_mac
-    host: 192.168.1.xxx
-#   - platform: mqtt
-#     name: "Switch Termostato"
-#     state_topic: "shellies/shelly1-xxxxx/relay/0"
-#     command_topic: "shellies/shelly1-xxxxx/relay/0/command"
-#     qos: 0
-#     payload_on: "on"
-#     payload_off: "off"
-#     optimistic: false
-#     retain: false
+    host: 192.168.1.14
+    turn_off:
+      service: script.pi_zero_turn_off
+# PI 3A+
+  - platform: wake_on_lan 
+    name: pi_3_a_plus_wol
+    mac: !secret pi_3_a_plus_mac
+    host: 192.168.1.118
+    
+#################################################################
+
+  - platform: template
+    switches:
+      server_template:
+        friendly_name: Server template
+        value_template: >
+          {% if is_state('input_boolean.server_control_on_off', 'on') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        turn_on:
+          - service: script.server_turn_on_script
+        turn_off:
+          - service: script.server_turn_off_script
+      retropie_template:
+        friendly_name: Retropie template
+        value_template: >
+          {% if is_state('switch.pi_3_a_plus_wol', 'on') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        turn_on:
+          - service: script.retropie_turn_on
+        turn_off:
+          - service: script.retropie_turn_off
+      ask_with_alexa_template:
+        friendly_name: Asked with Alexa
+        value_template: >
+          {% if is_state('input_boolean.ask_with_alexa', 'on') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        turn_on:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.ask_with_alexa
+        turn_off:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.ask_with_alexa
+      alexa_tts_on_off_template:
+        friendly_name: Alexa puoi parlare
+        value_template: >
+          {% if is_state('input_boolean.alexa_tts_on_off', 'on') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        turn_on:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.alexa_tts_on_off
+        turn_off:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.alexa_tts_on_off
