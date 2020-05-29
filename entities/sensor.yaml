@@ -12,7 +12,7 @@
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
-    scan_interval: '30'
+    scan_interval: '60'
   - platform: systemmonitor
     resources:
       - type: disk_use_percent
@@ -22,21 +22,21 @@
       - type: memory_use
       - type: processor_use
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/smb/smb_locked_file'
+    resource: 'http://192.168.1.14:1234/hassio/smb/smb_locked_file'
     name: smb_locked_file
     scan_interval: 3600
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/pizero/pizero_temp'
+    resource: 'http://192.168.1.14:1234/hassio/pizero/pizero_temp'
     name: pizero_temp
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(1) }}'
     scan_interval: 3600
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/smb/get_smb_status'
+    resource: 'http://192.168.1.14:1234/hassio/smb/get_smb_status'
     name: smb_status_rest
     scan_interval: 3600
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_wd_stats'
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd_stats'
     name: wd_rest
     json_attributes:
       - name
@@ -48,7 +48,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_toshiba_stats'
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_toshiba_stats'
     name: toshiba_rest
     json_attributes:
       - name
@@ -60,7 +60,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_hitachi_stats'
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_hitachi_stats'
     name: hitachi_rest
     json_attributes:
       - name
@@ -72,7 +72,7 @@
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
   - platform: rest
-    resource: 'http://192.168.1.xxx:xxxx/hassio/nas/statistics/get_wd2_stats'
+    resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd2_stats'
     name: wd2_rest
     json_attributes:
       - name
@@ -123,8 +123,8 @@
         value_template: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
       last_alexa:
         entity_id:
-          - media_player.echo_dot_di_xxxxxx
-          - media_player.echo_dot_di_xxxxxx
+          - media_player.echo_dot_di_patrizia
+          - media_player.echo_dot_di_umberto
         value_template: >
           {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
 #################################################################################################
