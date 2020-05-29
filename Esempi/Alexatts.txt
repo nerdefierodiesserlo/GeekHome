@@ -1,9 +1,11 @@
+# servizio di notifica:
 notify:
   - platform: alexa_media
     name: alexa_media
 
 ############################################################
-
+# template sensor:
+sensor:
   - platform: template
     sensor:
       last_alexa:
