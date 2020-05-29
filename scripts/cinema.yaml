@@ -1,31 +1,162 @@
-# accendi_mibox_script:
-#   alias: accendi_mibox
-#   sequence:
-#     - service: switch.turn_on
-#       data:
-#         entity_id: switch.mi_box
-
-# spegni_mibox_script:
-#   alias: spegni_mibox
-#   sequence:
-#     - service: switch.turn_off
-#       data:
-#         entity_id: switch.mi_box
+#script esposti ad alexa
     
-# accendi_cinema_script:
-#   alias: accendi_cinema
-#   sequence:
-#     - service: switch.turn_on
-#       data:
-#         entity_id: switch.mi_box
-#     - service: switch.turn_on
-#       data:
-#         entity_id: switch.outlet_b44d
+turn_on_cinema_script:
+  alias: Accendi cinema script
+  sequence:
+    - service: media_player.turn_on
+      data: 
+        entity_id: media_player.fire_tv_stick_2
+    - service: input_boolean.turn_on
+      data: 
+        entity_id: input_boolean.server_control_on_off
+    - service_template: >
+        {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+          script.alexa_can_speak_turn_on_cinema_script
+        {% else %}
+          script.alexa_cant_speak_turn_on_cinema_script
+        {% endif %}
+    - service_template: >
+        {% if is_state('light.shelly_shsw_1_55dfe4', 'on')%}
+          light.turn_off
+        {% else %}
+          light.turn_on
+        {% endif %}
+      data:
+        entity_id: light.comodino
+    - service: light.turn_off
+      data:
+        entity_id: light.shelly_shsw_1_55dfe4  #luce camera
+    - delay: '00:00:10'
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.alexa_check_server_state
+    - service: script.start_kodi
 
-# spegni_cinema_script:
-#   alias: spegni_cinema
-#   sequence:
-#     - service: switch.turn_off
-#       data:
-#         entity_id: switch.mi_box
-#     - service: script.turn_off_pi_zero_script
+turn_off_cinema_script:
+  alias: Spegni cinema script
+  sequence:
+    - service: input_boolean.turn_off
+      data: 
+        entity_id: input_boolean.server_control_on_off
+    - service: script.stop_kodi
+    - delay: '00:00:05'
+    - service: media_player.turn_off
+      data: 
+        entity_id: media_player.fire_tv_stick_2
+    - service_template: >
+        {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+          script.alexa_can_speak_turn_off_cinema_script
+        {% else %}
+          script.alexa_cant_speak_turn_off_cinema_script
+        {% endif %}
+
+turn_on_tv_with_youtube_script:
+  alias: Accendi tv e apri youtube script
+  sequence:
+    - service: media_player.turn_on
+      data: 
+        entity_id: media_player.fire_tv_stick_2
+    - service: script.start_youtube
+
+#script non esposti ad alexa
+
+start_kodi:
+  sequence:
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.fire_tv_stick_2
+      source: 'org.xbmc.kodi'
+
+stop_kodi:
+  sequence:
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.fire_tv_stick_2
+      source: '!org.xbmc.kodi'
+
+start_youtube:
+  sequence:
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.fire_tv_stick_2
+      source: 'com.amazon.firetv.youtube'
+
+stop_youtube:
+  sequence:
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.fire_tv_stick_2
+      source: '!com.amazon.firetv.youtube'
+
+alexa_can_speak_turn_on_cinema_script:
+  alias: alexa_turn_on_cinema
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.2'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            {{ [
+                "Va bene, buona visione",
+                "Va bene, se non sai cosa guardare ti consiglio John Wick",
+                "Motori avanti tutta",
+                "Consideralo già fatto",
+                "Ogni tuo desiderio è un ordine",
+                "Lo faccio subito, ma non hai detto per favore",
+                "Senza di me non sapresti più che fare. E io senza di te non mi divertirei più. Ecco perché non ci uccideremo mai.",
+                "Roger comandante",
+                "Non è tanto chi sono, quanto quello che faccio, che mi qualifica",
+                "Energia",
+                "La capacità di parlare non fa di te un essere intelligente"
+              ] | random }}
+          {% else %}
+            ""
+          {% endif %}
+        data:
+          type: "tts"
+
+alexa_cant_speak_turn_on_cinema_script:
+  alias: alexa_cant_speak_turn_on_cinema_script
+  sequence:
+    - delay: '00:00:05'
+    
+alexa_can_speak_turn_off_cinema_script:
+  alias: alexa_turn_off_cinema
+  sequence:
+    - service: media_player.volume_set
+      data_template: 
+        entity_id: '{{ states.sensor.last_alexa.state }}' 
+        volume_level: '0.2'
+    - delay: '00:00:01'
+    - service: notify.alexa_media
+      data_template:
+        target: '{{ states.sensor.last_alexa.state }}' 
+        message: >
+          {% if is_state('input_boolean.alexa_check_server_state', 'off') and is_state('input_boolean.alexa_tts_on_off', 'on')%}
+            {{ [
+                  "Va bene",
+                  "Va bene, spero ti sia piaciuto il film",
+                  "Consideralo già fatto",
+                  "Ogni tuo desiderio è un ordine",
+                  "Lo faccio subito, ma non hai detto per favore",
+                  "Senza di me non sapresti più che fare. E io senza di te non mi divertirei più. Ecco perché non ci uccideremo mai.",
+                  "Roger comandante",
+                  "Non è tanto chi sono, quanto quello che faccio, che mi qualifica",
+                  "Energia",
+                  "La capacità di parlare non fa di te un essere intelligente"
+                ] | random }}
+          {% else %}
+              ""
+          {% endif %}
+        data:
+          type: "tts"
+
+alexa_cant_speak_turn_off_cinema_script:
+  alias: alexa_cant_speak_turn_on_cinema_script
+  sequence:
+    - delay: '00:00:05'
