@@ -1,0 +1,21 @@
+tv_mansarda_power_and_hdm1:
+  alias: 'Tv mansarda Power+HDMI1'
+  sequence:
+    - service: switch.toggle
+      data:
+        entity_id: switch.tv_samsung_mansarda_power
+    - delay: '00:00:13'
+    - service: switch.toggle
+      data:
+        entity_id: switch.tv_samsung_mansarda_hdmi1
+        
+tv_mansarda_power_and_hdm2:
+  alias: 'Tv mansarda Power+HDMI2'
+  sequence:
+    - service: switch.toggle
+      data:
+        entity_id: switch.tv_samsung_mansarda_power
+    - delay: '00:00:13'
+    - service: switch.toggle
+      data:
+        entity_id: switch.tv_samsung_mansarda_hdmi2

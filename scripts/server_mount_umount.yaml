@@ -1,0 +1,141 @@
+server_mount_script:
+  alias: Monta HD
+  sequence:
+    - service: rest_command.mount_hd
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Monta HD
+    - delay: '00:00:15'
+    - service: script.update_hd_stats
+    
+server_umount_script:
+  alias: Smonta HD
+  sequence:
+    - service: rest_command.umount_hd
+    - service: notify.notifiche_u
+      data:
+        title: '*Server*'
+        message: Smonta HD
+    - delay: '00:00:15'
+    - service: script.update_hd_stats
+
+mount_wd:
+  alias: mount_wd
+  sequence:
+    - service_template: rest_command.mount_wd
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd_rest
+    
+umount_wd:
+  alias: umount_wd
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd_rest
+    - service_template: rest_command.umount_wd
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd_rest
+
+mount_wd2:
+  alias: mount_wd2
+  sequence:
+    - service_template: rest_command.mount_wd2
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd2_rest
+    
+umount_wd2:
+  alias: umount_wd2
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd2_rest
+    - service_template: rest_command.umount_wd2
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd2_rest
+
+mount_wd3:
+  alias: mount_wd3
+  sequence:
+    - service_template: rest_command.mount_wd3
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd3_rest
+    
+umount_wd3:
+  alias: umount_wd3
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd3_rest
+    - service_template: rest_command.umount_wd3
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.wd3_rest
+        
+mount_toshiba:
+  alias: mount_toshiba
+  sequence:
+    - service_template: rest_command.mount_toshiba
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.toshiba_rest
+    
+umount_toshiba:
+  alias: umount_toshiba
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.toshiba_rest
+    - service_template: rest_command.umount_toshiba
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.toshiba_rest
+        
+mount_hitachi:
+  alias: mount_hitachi
+  sequence:
+    - service_template: rest_command.mount_hitachi
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.hitachi_rest
+    
+umount_hitachi:
+  alias: umount_hitachi
+  sequence:
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.hitachi_rest
+    - service_template: rest_command.umount_hitachi
+    - delay: "00:00:05"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+        - sensor.hitachi_rest
