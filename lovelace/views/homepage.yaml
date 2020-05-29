@@ -32,19 +32,19 @@
               tap_action:
                 action: call-service
                 service: script.turn_off_pc_script
-            - entity: switch.laptop_wol
-              icon: mdi:laptop-chromebook
-              name: Portatile
+            - entity: switch.retropie_template
+              icon: mdi:gamepad-variant-outline
+              name: RetroPie
               tap_action:
-                action: call-service
-                service: script.turn_off_laptop_script
+                tap_action:
+                action: toggle
             - entity: switch.pi_zero_wol
               icon: mdi:raspberry-pi
               name: PI Zero
               tap_action:
-                action: call-service
-                service: script.server_control
-            - entity: input_boolean.server_control_on_off
+                tap_action:
+                action: toggle
+            - entity: switch.server_template
               icon: mdi:server
               show_state: true
               name: Server
@@ -114,6 +114,7 @@
               entities:
                 - entity: switch.outlet_b44d
                   name: Presa Server
+                - entity: switch.seconda_presa
             - type: custom:fold-entity-row
               open: false
               head:
@@ -156,65 +157,441 @@
                   icon: mdi:stop
                 - entity: script.check_ftp_status_script
                   icon: mdi:web
-        - type: thermostat
+        - type: custom:mini-media-player
           style: |
             ha-card {
               background: rgba(0,0,0,0.);
               border-radius: 15px;
             }
-          entity: climate.termostato_mansarda
-          name: Mansarda
-        - type: entities
+          entity: media_player.fire_tv_stick_2
+          hide:
+            source: true
+            icon: true
+            prev: true
+            next: true
+        - type: custom:mini-media-player
           style: |
             ha-card {
               background: rgba(0,0,0,0.);
               border-radius: 15px;
             }
-          title: Timer termosifoni mansarda
-          show_header_toggle: false
-          entities:
-            - type: custom:fold-entity-row
-              open: false
-              head: timer.timer_termosifoni_mansarda
-              entities:
-                - entity: sensor.thermostat_mansarda_timer
-                - entity: input_number.thermostat_mansarda_hours
-                  name: Ore
-                - entity: input_number.thermostat_mansarda_minutes
-                  name: Minuti
-                - entity: script.change_timer_termosifoni_mansarda
-                  name: Aggiorna timer
-                  icon: mdi:update
+          entity: media_player.echo_dot_di_umberto
+          icon: mdi:amazon-alexa
+          artwork: cover
+          hide:
+            volume: true
+            source: true
+            power_state: false
         - break
-        - type: thermostat
+        - type: custom:layout-card
+          layout: vertical
+          title: "Telecomando Samsung"
           style: |
             ha-card {
               background: rgba(0,0,0,0.);
               border-radius: 15px;
             }
-          entity: climate.termostato_primo_piano
-          name: Primo piano
-        - type: entities
-          style: |
-            ha-card {
-              background: rgba(0,0,0,0.);
-              border-radius: 15px;
-            }
-          title: Timer termosifoni primo piano
-          show_header_toggle: false
-          entities:
-            - type: custom:fold-entity-row
-              open: false
-              head: timer.timer_termosifoni_primo_piano
-              entities:
-                - entity: sensor.thermostat_primo_piano_timer
-                - entity: input_number.thermostat_primo_piano_hours
-                  name: Ore
-                - entity: input_number.thermostat_primo_piano_minutes
-                  name: Minuti
-                - entity: script.change_timer_termosifoni_primo_piano
-                  name: Aggiorna timer
-                  icon: mdi:update
+          cards:
+            - type: custom:layout-card
+              layout: vertical
+              cards:
+                - type: "custom:button-card"
+                  color_type: label-card
+                  color: var(--paper-item-icon-active-color)
+                  name: Telecomando mansarda
+                  styles:
+                    card:
+                      - height: 50px
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_power
+                      icon: mdi:power
+                      label: 'On / Off'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi_toggle
+                      color_type: card
+                      color: red
+                      icon: mdi:import
+                      label: 'Source'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_antenna
+                      icon: mdi:television-box
+                      label: 'TV'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi1
+                      icon: mdi:video-input-hdmi
+                      label: 'HDMI 1'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      custom_fields:
+                        hdmi_number: >
+                          [[[
+                            return `<ha-icon
+                              icon="mdi:numeric-1-box"
+                              style="width: 75%; height: 75%;">
+                              </ha-icon>`
+                          ]]]
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                      styles:
+                        custom_fields:
+                          hdmi_number:
+                            - show_label: false
+                            - show_name: false
+                            - border-radius: 50%
+                            - position: absolute
+                            - left: 60%
+                            - top: 5%
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi2
+                      icon: mdi:video-input-hdmi
+                      label: 'HDMI 2'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      custom_fields:
+                        hdmi_number: >
+                          [[[
+                            return `<ha-icon
+                              icon="mdi:numeric-2-box"
+                              style="width: 75%; height: 75%;">
+                              </ha-icon>`
+                          ]]]
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                      styles:
+                        custom_fields:
+                          hdmi_number:
+                            - show_label: false
+                            - show_name: false
+                            - border-radius: 50%
+                            - position: absolute
+                            - left: 60%
+                            - top: 5% 
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.server_template
+                          icon: mdi:nas
+                          label: 'Server'
+                          show_label: true
+                          show_state: false
+                          show_name: false
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-1-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-4-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-7-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-2-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-4-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-8-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-3-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-6-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_hdmi_toggle
+                          icon: mdi:numeric-9-box-outline
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.retropie_template
+                          icon: mdi:gamepad-variant-outline
+                          label: 'Retropie'
+                          show_label: true
+                          show_state: false
+                          show_name: false
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_volume_up
+                          icon: mdi:plus-circle
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          icon: mdi:volume-high
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_volume_down
+                          icon: mdi:minus-circle
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          color_type: blank-card
+                          styles:
+                            card:
+                              - height: 44px
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_left
+                          icon: mdi:arrow-left-bold
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          color_type: blank-card
+                          styles:
+                            card:
+                              - height: 44px
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_up
+                          icon: mdi:arrow-up-bold
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_ok
+                          icon: mdi:check-bold
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_down
+                          icon: mdi:arrow-down-bold
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          color_type: blank-card
+                          styles:
+                            card:
+                              - height: 44px
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_right
+                          icon: mdi:arrow-right-bold
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          color_type: blank-card
+                          styles:
+                            card:
+                              - height: 44px
+                    - type: custom:layout-card
+                      layout: vertical
+                      cards:
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_volume_next
+                          icon: mdi:plus-circle
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          icon: mdi:alpha-p-circle
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                        - type: "custom:button-card"
+                          entity: switch.tv_samsung_mansarda_channel_prev
+                          icon: mdi:minus-circle
+                          show_label: false
+                          show_state: false
+                          show_name: false
+                          state:
+                            - value: 'on'
+                              color: var(--primary-color);
+                            - value: 'off'
+                              color: var(--primary-color);
+                - type: "custom:button-card"
+                  color_type: label-card
+                  color: var(--paper-item-icon-active-color)
+                  styles:
+                    card:
+                      - height: 50px
         - type: thermostat
           style: |
             ha-card {
