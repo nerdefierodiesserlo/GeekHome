@@ -7,8 +7,10 @@ CREATO IL PROFILO DI SICUREZZA (MINUTO 03:05), UNA VOLTA CREATO IL PROFILO SEGUI
 3) si aprirà una finestra "Enter Consent Screen Information" in cui dovrete inserire semplicemente nel riquadro 
    "Consent Privacy Notice URL" il seguente link http://www.example.com (non vi preoccupate se sembra inutile, 
    l'importante è che il riquadro non rimanga vuoto)
-4) salvate e tornate alla pagina di gestione del profilo di sicurezza premendo su Developer console (in alto a destra) -        settings - security profile (link diretto 
-   https://developer.amazon.com/settings/console/securityprofile/overview.html) e scegliete il profilo creato
+4) salvate e tornate alla pagina di gestione del profilo di sicurezza premendo su 
+   Developer console (in alto a destra) - settings - security profile 
+   (link diretto https://developer.amazon.com/settings/console/securityprofile/overview.html) 
+   e scegliete il profilo creato
 5) lasciate la pagina aperta e proseguite con il video
 
 --------------------------------
