@@ -1,0 +1,105 @@
+COMUNICAZIONE IMPORTANTE: NEL VIDEO NON E' PRESENTE UN PASSAGGIO ORMAI FONDAMENTALE DA EFFETTUARE SUBITO DOPO AVER CREATO IL PROFILO DI SICUREZZA, UNA VOLTA CREATO IL PROFILO SEGUITE I SEGUENTI PASSAGGI:
+1) andate a questo link https://developer.amazon.com/loginwithamazon/console/site/lwa/select-security-profile.html
+2) selezionate il profilo di sicurezza appena creato e premete su conferma
+3) si aprirà una finestra "Enter Consent Screen Information" in cui dovrete inserire semplicemente nel riquadro "Consent Privacy Notice URL" il seguente link http://www.example.com (non vi preoccupate se sembra inutile, l'importante è che il riquadro non rimanga vuoto)
+4) salvate e proseguite con il video
+-----------------------------------------------------------
+Finalmente integriamo Home Assistant all'interno di Alexa. La procedura vi porta a creare la vostra skill personale che potrete attivare e aggiornare in ogni momento attraverso una funzione chiamata haaska (Home Assistant Alexa Skill Adapter). Vi lascio il link diretto alla pagina di github dove si trova la guida ma ci tengo a sottolineare come anche altre pagine tra cui ovviamente il solito hassiohelp siano state fondamentali per la realizzazione del video.
+https://github.com/mike-grant/haaska/wiki
+
+Questi sono i 4 link a cui accedere di cui parlo nel video:
+1) https://developer.amazon.com/home.html
+2) https://developer.amazon.com/alexa/console/ask
+3) https://console.aws.amazon.com/console/home
+4) https://github.com/mike-grant/haaska/releases/tag/1.1.0
+
+(1)
+inserisci sul configuration.yaml:
+api:
+alexa:
+  smart_home:
+
+riavvia
+
+andate su https://developer.amazon.com/home.html fate il login con l'account amazon e create il profilo da sviluppatori
+Fatto il login crea nuovo profilo di sicurezza compilando cosi:
+Domotica
+Domotica
+
+salva e vai a questo link https://developer.amazon.com/loginwithamazon/console/site/lwa/select-security-profile.html
+seleziona il profilo di sicurezza appena creato e premi su conferma
+si aprirà una finestra "Enter Consent Screen Information" in cui dovrete inserire semplicemente nel riquadro "Consent Privacy Notice URL" il seguente link http://www.example.com (non vi preoccupate se sembra inutile, l'importante è che il riquadro non rimanga vuoto)
+salvate e tornate alla pagina di gestione del profilo di sicurezza premendo su Developer console in alto a destra -> setting ->  security profile -> nome del profilo
+------------------------------------
+(2)
+andate su https://developer.amazon.com/alexa/console/ask fate il login con l'account amazon, crea skill compilando con:
+Home Assistant
+Italian (IT)
+Smart Home
+Provision your own
+crea e lascia aperto
+------------------------------------
+(3)
+andate su https://console.aws.amazon.com/console/home create un nuovo account (non basta avere già un account amazon) + carta credito
+andate su servizi - IAM e scegliamo dal pannello di controllo ruoli - crea ruolo
+ora scegliamo AWS service e poi Lambda e clicchiamo su successivo:autorizzazioni
+cerchiamo databaseAdministrator e scegliamo successivo:tag
+adesso succesivo:verifica e mettiamo nel tab 4 il nome lambda_basic_execution e creaiamo il ruolo
+ora in alto a sinistra cliccate su servizi - Lambda e selezioniamo EU - Ireland
+crea funzione - crea da zero e compila con:
+Nome: haaska
+Runtime: Python 3.6
+Ruolo: Selezionare un ruolo esistente
+Ruolo esistente: lambda_basic_execution
+e crea
+adesso clicca nella nuova pagina su aggiungi trigger e scrivi Alexa Smart Home inserendo nel ampo skill id l'id della skill creata (2) abilitando il trigger
+scarica questo zip https://github.com/mike-grant/haaska/releases/tag/1.1.0
+clicca su haaska e scorrendo trova Codice della funzione, carica lo zip (senza estrarlo, solo zip)
+imposta su Runtime python 3.6 e su gestore inserisci haaska.event_handler
+in basso ruolo di esecuzione - utilizza un ruolo esistente - lambda_basic_execution
+impostazioni di base - descrizione (lascia vuoto) memoria - 128MB tempo - 15sec
+salva
+---------------------------------
+torna su Hassio e genera un token a lunga vita
+adesso andiamo nell'editor della pagina precedente (dello zip caricato) e modifichiamo il file config.json:
+"url": "https://tuodominio.duckdns.org:8123/api"
+"bearer_token": "token creato",
+"debug": false,
+"ssl_verify": true,
+"ssl_client": 
+
+salva e copia in alto a destra il codice arn:lambda....
+-------------------------------
+completa la creazione della skill (2) inserendo in Default endpoint l'arn copiato
+seleziona Europe,India incolla di nuovo l'arn e salva
+clicca a sinistra su Account Linking e compila così:
+Authorization URI: https://www.amazon.com/ap/oa
+Access Token URI: https://api.amazon.com/auth/o2/token
+Client ID: CLIENT ID ottenuto nel profilo di sicurezza creata
+CLIENT Secret: CLIENT SECRET che troviamo sempre sul profilo di sicurezza
+Client Authentication Scheme: HTTP BASIC (Recommended)
+
+premi su aggiungi scope e scrivi profile e salva
+----------------------------------
+torna alla pagina del punto (2) e clicca su modifica compilando i campi Allowed Return Urls prendendo i valori dalla pagina precedente
+----------------------------------
+torna su lambda e creiamo un test:
+{
+  "directive": {
+    "header": {
+      "namespace": "Alexa.Discovery",
+      "name": "Discover",
+      "payloadVersion": "3",
+      "messageId": "1bd5d003-31b9-476f-ad03-71d471922820"
+    },
+    "payload": {
+      "scope": {
+        "type": "BearerToken",
+        "token": "access-token-from-skill"
+      }
+    }
+  }
+}
+salva e esegui, se va a buon fine abbiamo fatto tutto bene altrimenti qualche passaggio è stato sbagliato
+------------------------------
+prima di aggiungere la skill su alexa configuriamo i dispositivi da mostrare su hassio
