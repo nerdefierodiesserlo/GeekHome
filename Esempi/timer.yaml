@@ -1,0 +1,46 @@
+#il timer è dichiarato così 
+timer:
+  timer_ventilatore:
+    name: Segnimento tra
+    duration: '01:30:00'
+
+#automazioni
+#quando accendo lo switch (tra l'una di notte e le 5) parte un timer 
+- alias: turn_on_fan_timer
+  trigger:
+    - platform: state
+      entity_id: switch.xiaomi_wifi
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: time
+      after: '01:00:00'
+      before: '05:00:00'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.timer_ventilatore
+
+#quando spengo manualmente lo switch il timer viene cancellato e torna al valore iniziale
+- alias: manual_turn_off_fan
+  trigger:
+    - platform: state
+      entity_id: switch.xiaomi_wifi
+      from: 'on'
+      to: 'off'
+  action:
+    - service: timer.cancel
+      data:
+        entity_id: timer.timer_ventilatore
+
+#quando il timer arriva a zero (finisce) lo svitch viene spento
+- alias: turn_off_fan_timer
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.timer_ventilatore
+  action:
+    - service: switch.turn_off
+      data:
+        entity_id: switch.xiaomi_wifi
