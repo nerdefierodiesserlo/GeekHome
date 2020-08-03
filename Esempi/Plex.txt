@@ -1,0 +1,18 @@
+sudo su
+apt update && sudo apt upgrade
+apt install apt-transport-https ca-certificates curl
+curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
+echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
+apt update
+apt install plexmediaserver
+systemctl status plexmediaserver
+chown -R plex: /var/lib/plexmediaserver
+
+mkdir -p /home/server/mnt
+mkdir /home/server/mnt/wd && mkdir /home/serverdiumberto/mnt/wd2
+chmod 777 /home/serverdiumberto/mnt/wd && chmod 777 /home/serverdiumberto/mnt/wd2
+sudo blkid
+sudo nano /etc/fstab
+--------------------------
+UUID=xxxxxxxxxxxxx /home/server/mnt/wd         ntfs-3g   defaults,nofail,nls=utf8,umask=000,uid=1000,gid=1000,windows_names 0 0
+--------------------------
