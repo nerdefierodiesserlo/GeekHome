@@ -1,3 +1,5 @@
+Installazione Plex:
+
 sudo su
 apt update && sudo apt upgrade
 apt install apt-transport-https ca-certificates curl
@@ -8,9 +10,13 @@ apt install plexmediaserver
 systemctl status plexmediaserver
 chown -R plex: /var/lib/plexmediaserver
 
+--------------------------------------------------------
+Per montare gli HD creo un percorso per montarli, gli assegno i permessi di R/W e li carico sul file fstab:
+
 mkdir -p /home/server/mnt
 mkdir /home/server/mnt/wd && mkdir /home/serverdiumberto/mnt/wd2
 chmod 777 /home/serverdiumberto/mnt/wd && chmod 777 /home/serverdiumberto/mnt/wd2
+
 sudo blkid
 sudo nano /etc/fstab
 --------------------------
