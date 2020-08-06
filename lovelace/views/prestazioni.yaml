@@ -9,6 +9,7 @@
   icon: mdi:gauge
   cards:
     - type: custom:layout-card
+      column_width: 460px
       layout: vertical
       cards:
         - type: custom:mini-graph-card
@@ -29,11 +30,18 @@
           title: Temperatura
           entity: sensor.cpu_temperature
           min: 0
-          max: 70
+          max: 90
           severity:
-            green: 30
-            amber: 40
-            red: 50
+            green: 0
+            yellow: 55
+            red: 70
+        - type: thermostat
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          entity: climate.controllo_temperatura_rpi
         - break
         - type: custom:mini-graph-card
           style: |
@@ -56,9 +64,24 @@
           min: 0
           max: 100
           severity:
-            green: 40
-            amber: 55
-            red: 70
+            green: 0
+            yellow: 45
+            red: 60
+        - type: custom:gauge-card
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Uso disco
+          unit: '%'
+          entity: sensor.disk_use_percent
+          min: 0
+          max: 100
+          severity:
+            green: 0
+            yellow: 45
+            red: 60
         - break
         - type: custom:mini-graph-card
           style: |
@@ -82,10 +105,8 @@
           max: 100
           severity:
             green: 0
-            amber: 40
+            yellow: 30
             red: 60
-        - type: thermostat
-          entity: climate.controllo_temperatura_rpi
 ####################################################
 #                                                  #
 #            END OF CONFIGURATION FILE             #
