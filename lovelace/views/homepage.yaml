@@ -1,0 +1,440 @@
+####################################################
+#                                                  #
+#                  HOMEPAGE                        #
+#                                                  #
+####################################################
+  title: Homepage
+  panel: true
+  path: homepage
+  icon: mdi:home-assistant
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      column_width: 460px
+      cards:
+        # DISPOSITIVI CONNESSI
+        - type: "custom:config-template-card"
+          entities:
+            - switch.computer_lan_wol
+            - switch.computer_wifi_wol
+            - switch.retropie_template
+            - switch.pi_zero_wol
+            - switch.server_template
+            - switch.xiaomi_wifi
+          card:
+            type: glance
+            title: Dispositivi Connessi
+            entities:
+              - entity: switch.computer_lan_wol
+                name: "${states['switch.computer_lan_wol'].state === 'on' ?'PC LAN':states['switch.computer_wifi_wol'].state === 'on'?'PC WIFI':'PC'}"
+                icon: "${states['switch.computer_lan_wol'].state === 'on' ?'mdi:ethernet':states['switch.computer_wifi_wol'].state === 'on'?'mdi:wifi':'mdi:laptop-off'}"
+              - entity: switch.retropie_template
+                name: RetroPie
+                icon: mdi:gamepad-variant
+                tap_action:
+                  action: toggle
+              - entity: switch.pi_zero_wol
+                name: Pi Zero
+                icon: mdi:raspberry-pi
+                tap_action:
+                  action: more-info
+              - entity: switch.server_template
+                name: Server
+                icon: "${states['switch.server_template'].state === 'on' ?'mdi:server':'mdi:server-off'}"
+                tap_action:
+                  action: toggle
+              - entity: switch.xiaomi_wifi
+                icon: "${states['switch.xiaomi_wifi'].state === 'on' ?'mdi:fan':'mdi:fan-off'}"
+                tap_action:
+                  action: toggle
+        # HOME ASSISTANT
+        - type: glance
+          show_state: false
+          title: Comandi
+          entities:
+            - entity: script.reboot_home_assistant_script
+              name: Reboot HA
+              icon: mdi:restart
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente riavviare HA?
+                service: script.reboot_home_assistant_script
+            - entity: script.poweroff_home_assistant_script
+              name: Stop HA
+              icon: mdi:power
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente stoppare HA?
+                service: script.poweroff_home_assistant_script
+            - entity: script.reboot_pc_in_windows_script
+              name: Linux -> Win
+              icon: mdi:microsoft
+              tap_action:
+                action: toggle
+            - entity: script.reboot_pi4_script
+              name: Reboot Pi4
+              icon: mdi:restart
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente riavviare il raspberry?
+                service: script.reboot_pi4_script
+        
+        # TEMPERATURE
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          entities:
+            - entity: sensor.dark_sky_temperature
+            - entity: sensor.dark_sky_humidity
+            - entity: sensor.temperature_and_humidity_sensor_dc21_temperature
+            - entity: sensor.temperature_and_humidity_sensor_dc21_humidity
+            - entity: sensor.temperature_and_humidity_sensor_6d4d_temperature
+            - entity: sensor.temperature_and_humidity_sensor_6d4d_humidity
+            - entity: sensor.xiaomi_temperatura_mansarda
+            - entity: sensor.xiaomi_umidita_mansarda
+            - entity: sensor.xiaomi_temperatura_camera
+            - entity: sensor.xiaomi_umidita_camera
+            - entity: sensor.temperatura_mansarda
+              icon: mdi:home-thermometer
+            - entity: sensor.temperatura_primo_piano
+              icon: mdi:home-thermometer
+        - break
+        - type: custom:layout-card
+          layout: vertical
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          cards:
+            - type: custom:layout-card
+              layout: vertical
+              cards:
+                - type: "custom:button-card"
+                  color_type: label-card
+                  color: var(--paper-item-icon-active-color)
+                  name: Telecomando mansarda
+                  styles:
+                    card:
+                      - height: 20px
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_power
+                      icon: mdi:power
+                      label: 'On / Off'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi_toggle
+                      icon: mdi:import
+                      label: 'Source'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_antenna
+                      icon: mdi:television-box
+                      label: 'TV'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi1
+                      icon: mdi:video-input-hdmi
+                      label: 'HDMI 1'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      custom_fields:
+                        hdmi_number: >
+                          [[[
+                            return `<ha-icon
+                              icon="mdi:numeric-1-box"
+                              style="width: 75%; height: 75%;">
+                              </ha-icon>`
+                          ]]]
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                      styles:
+                        custom_fields:
+                          hdmi_number:
+                            - show_label: false
+                            - show_name: false
+                            - border-radius: 50%
+                            - position: absolute
+                            - left: 60%
+                            - top: 5%
+                    - type: "custom:button-card"
+                      entity: switch.tv_samsung_mansarda_hdmi2
+                      icon: mdi:video-input-hdmi
+                      label: 'HDMI 2'
+                      show_label: true
+                      show_state: false
+                      show_name: false
+                      custom_fields:
+                        hdmi_number: >
+                          [[[
+                            return `<ha-icon
+                              icon="mdi:numeric-2-box"
+                              style="width: 75%; height: 75%;">
+                              </ha-icon>`
+                          ]]]
+                      state:
+                        - value: 'on'
+                          color: var(--primary-color);
+                        - value: 'off'
+                          color: var(--primary-color);
+                      styles:
+                        custom_fields:
+                          hdmi_number:
+                            - show_label: false
+                            - show_name: false
+                            - border-radius: 50%
+                            - position: absolute
+                            - left: 60%
+                            - top: 5% 
+                - type: "custom:button-card"
+                  color_type: label-card
+                  color: var(--paper-item-icon-active-color)
+                  styles:
+                    card:
+                      - height: 20px
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Info generali
+          show_header_toggle: false
+          entities:
+            - sensor.current_version
+            - sensor.home_assistant_latest_release_version
+            - type: custom:fold-entity-row
+              head: sensor.memory_use_percent
+              entities:
+                - sensor.memory_use
+                - sensor.memory_free
+            - entity: sensor.processor_use
+            - entity: sensor.disk_use_percent
+            - type: custom:fold-entity-row
+              head: sensor.cpu_temperature
+              entities:
+                - climate.controllo_temperatura_rpi
+            - type: custom:fold-entity-row
+              head: sensor.plex_state
+              entities:
+                - sensor.plex_raspberrypi
+                - entity: script.update_plex_library
+                  icon: mdi:update
+                  name: Aggiorna libreria
+                - entity: script.restart_plex_script
+                  icon: mdi:reload
+                - entity: script.start_plex_script
+                  icon: mdi:ray-start-arrow
+                - entity: script.stop_plex_script
+                  icon: mdi:alert-box
+            - entity: sensor.hacs
+            - media_player.fire_tv_stick
+            - media_player.echo_dot_di_umberto
+
+        # - type: thermostat
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   entity: climate.termostato_mansarda
+        #   name: Mansarda
+        # - type: entities
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   title: Timer termosifoni mansarda
+        #   show_header_toggle: false
+        #   entities:
+        #     - type: custom:fold-entity-row
+        #       open: false
+        #       head: timer.timer_termosifoni_mansarda
+        #       entities:
+        #         - entity: sensor.thermostat_mansarda_timer
+        #         - entity: input_number.thermostat_mansarda_hours
+        #           name: Ore
+        #         - entity: input_number.thermostat_mansarda_minutes
+        #           name: Minuti
+        #         - entity: script.change_timer_termosifoni_mansarda
+        #           name: Aggiorna timer
+        #           icon: mdi:update
+        # - break
+        # - type: thermostat
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   entity: climate.termostato_primo_piano
+        #   name: Primo piano
+        # - type: entities
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   title: Timer termosifoni primo piano
+        #   show_header_toggle: false
+        #   entities:
+        #     - type: custom:fold-entity-row
+        #       open: false
+        #       head: timer.timer_termosifoni_primo_piano
+        #       entities:
+        #         - entity: sensor.thermostat_primo_piano_timer
+        #         - entity: input_number.thermostat_primo_piano_hours
+        #           name: Ore
+        #         - entity: input_number.thermostat_primo_piano_minutes
+        #           name: Minuti
+        #         - entity: script.change_timer_termosifoni_primo_piano
+        #           name: Aggiorna timer
+        #           icon: mdi:update
+        
+        # FIRETV
+        # - type: custom:mini-media-player
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   entity: media_player.fire_tv_stick
+        #   hide:
+        #     source: true
+        #     icon: true
+        #     prev: true
+        #     next: true
+        # ECHO DOT
+        # - type: custom:mini-media-player
+        #   style: |
+        #     ha-card {
+        #       background: rgba(0,0,0,0.);
+        #       border-radius: 15px;
+        #     }
+        #   entity: media_player.echo_dot_di_umberto
+        #   icon: mdi:amazon-alexa
+        #   artwork: cover
+        #   hide:
+        #     volume: true
+        #     source: true
+        #     power_state: false
+            
+        - break
+        # PRESE E LUCI
+        - type: entities
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          title: Prese & luci
+          show_header_toggle: false
+          entities:
+            - type: custom:fold-entity-row
+              open: false
+              head:
+                type: section
+                label: Prese wifi
+              entities:
+                - entity: switch.outlet_b44d
+                  name: Presa Server
+                #- entity: switch.scrivania
+                #  icon: mdi:desk-lamp
+                - entity: switch.xiaomi_wifi
+                - entity: switch.seconda_presa
+            - type: custom:fold-entity-row
+              open: false
+              head:
+                type: section
+                label: Luci
+              entities:
+                - group.luci_camera_group
+                - light.shelly_shsw_1_55dfe4  #luce camera
+                - light.shelly_shsw_1_76f7d1  #luce scale
+                - light.shelly_shsw_1_7703e4  #luce bagno
+                - light.comodino
+                - light.divano
+            - type: custom:fold-entity-row
+              open: false
+              head:
+                type: section
+                label: Server
+              entities:
+                - entity: automation.spegnimento_programmato
+                  icon: mdi:alarm
+                - entity: script.server_mount_script
+                  icon: mdi:harddisk-plus
+                - entity: script.server_umount_script
+                  icon: mdi:harddisk-remove
+                - entity: script.check_smb_status_script
+                  icon: mdi:folder-account
+            - type: custom:fold-entity-row
+              open: false
+              head:
+                type: section
+                label: Batterie
+              entities:
+                - entity: sensor.0x000b57fffe9f2b3c_battery
+                - entity: sensor.0x00158d00032699e9_battery
+                - entity: sensor.redmi_5_plus_battery_level
+                - entity: sensor.xiaomi_batteria_mansarda
+                - entity: sensor.xiaomi_batteria_camera
+            - type: custom:fold-entity-row
+              open: false
+              head:
+                type: section
+                label: Tracker
+              entities:
+                - entity: sensor.chiavi_umberto
+                  icon: mdi:key-variant
+                - entity: sensor.portafoglio_umberto
+                  icon: mdi:wallet
+                - entity: sensor.miband4
+                  icon: mdi:watch-variant
+        # VENTOLA RASPBERRY
+        - type: thermostat
+          style: |
+            ha-card {
+              background: rgba(0,0,0,0.);
+              border-radius: 15px;
+            }
+          entity: climate.controllo_temperatura_rpi
+          name: Controllo Temperatura RPi
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################
