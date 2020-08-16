@@ -1,0 +1,36 @@
+remote_receiver:
+  pin:
+    number: GPIO15
+    inverted: True
+  dump: all
+
+remote_transmitter:
+  pin: GPIO2
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: template
+    name: Esp32 Samsung power
+    turn_on_action:
+      - remote_transmitter.transmit_samsung:
+          data: 0xE0E040BF
+  - platform: template
+    name: Esp32 Samsung hdmi
+    turn_on_action:
+      - remote_transmitter.transmit_samsung:
+          data: 0xE0E0D12E  
+  - platform: template
+    name: Esp32 Samsung hdmi1
+    turn_on_action:
+      - remote_transmitter.transmit_samsung:
+          data: 0xE0E09768
+  - platform: template
+    name: Esp32 Samsung hdmi2
+    turn_on_action:
+      - remote_transmitter.transmit_samsung:
+          data: 0xE0E07D82
+  - platform: template
+    name: Esp32 Samsung Tv
+    turn_on_action:
+      - remote_transmitter.transmit_samsung:
+          data: 0xE0E0D827
