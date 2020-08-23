@@ -7,10 +7,12 @@ vai alla pagina http://192.168.1.114:32400/library/sections?X-Plex-Token=xxxxxxx
 cerca key="1" type="movie" o quello che vuoi
 key è l'id
 
-3) usa il comando per aggiornare:
-crea l'url con il  tuo IP, l'id della sezione e il tuo codice
+3) crea l'url da lanciare con il tuo IP, l'id della sezione e il tuo codice, a seconda di cosa tu voglia fare usa refresh? o refresh?force=1&:
+
+a) per analizzare semplicemente la libreria (per trovare nuovi elementi senza aggiornare quelli già contenuiti nel database) crea l'url così:
 
 http://192.168.1.114:32400/library/sections/1/refresh?X-Plex-Token=xxxxxxxxxxx
 
-4) aggiorna i metadata di tutto
+b) per aggiornare invece tutti i metadata usa questo:
+
 http://192.168.1.114:32400/library/sections/1/refresh?force=1&X-Plex-Token=xxxxxxxxxxx
