@@ -1,0 +1,16 @@
+1) Ottieni il token:
+vai nella libreria, clicca i 3 puntini di un qualsiasi film e scegli informazioni, in basso a sinistra clicca su xml
+si apre una pagina di testo, a noi interessa solo l'url, copia alla fine dell'ulr la sezione X-Plex-Token=xxxxxxxxxxx
+
+2) trova gli id delle sezioni:
+vai alla pagina http://192.168.1.114:32400/library/sections?X-Plex-Token=xxxxxxxxxxx
+cerca key="1" type="movie" o quello che vuoi
+key è l'id
+
+3) usa il comando per aggiornare:
+crea l'url con il  tuo IP, l'id della sezione e il tuo codice
+
+http://192.168.1.114:32400/library/sections/1/refresh?X-Plex-Token=xxxxxxxxxxx
+
+4) aggiorna i metadata di tutto
+http://192.168.1.114:32400/library/sections/1/refresh?force=1&X-Plex-Token=xxxxxxxxxxx
