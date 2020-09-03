@@ -9,9 +9,9 @@ I vari dispositivi (switch, sensori e altro) stanno all'interno della cartella e
 ![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Screenshot/homepage.png)
 <table style="margin-left:auto;margin-right:auto;">
   <tr style="margin-left:auto;margin-right:auto;">
-    <td><img src="Screenshot/screenrecord1.gif" ></td>
-    <td><img src="Screenshot/screenrecord2.gif" ></td>
-    <td><img src="Screenshot/screenrecord3.gif" width=270 height=480></td>
+    <td><img src="Screenshot/screenrecord1.gif"></td>
+    <td><img src="Screenshot/screenrecord2.gif"></td>
+    <td><img src="Screenshot/screenrecord3.gif"></td>
   </tr>
  </table>
  
