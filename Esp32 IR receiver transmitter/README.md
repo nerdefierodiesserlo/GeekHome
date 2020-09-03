@@ -1,5 +1,5 @@
 # Esp32 IR receiver + transmitter
-
+#### Componenti
 <table style="margin-left:auto;margin-right:auto;">
   <tr style="margin-left:auto;margin-right:auto;">
     <td><img src="IR-receiver.jpg"></td>
