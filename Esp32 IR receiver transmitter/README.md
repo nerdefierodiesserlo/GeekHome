@@ -6,5 +6,9 @@
     <td><img src="IR-transmitter.jpg"></td>
   </tr>
  </table>
-![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Esp32%20IR%20receiver%20transmitter/schema%20generico.jpg)
-![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Esp32%20IR%20receiver%20transmitter/schema%20dettagliato.jpg)
+ <table style="margin-left:auto;margin-right:auto;">
+  <tr style="margin-left:auto;margin-right:auto;">
+    <td><img src="schema%20generico.jpg"></td>
+    <td><img src="schema%20dettagliato.jpg"></td>
+  </tr>
+ </table>
