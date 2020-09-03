@@ -14,8 +14,7 @@ I vari dispositivi (switch, sensori e altro) stanno all'interno della cartella e
     <td><img src="Screenshot/screenrecord3.gif" width=270 height=480></td>
   </tr>
  </table>
-
-![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Screenshot/screenrecord.gif)
+ 
 ![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Screenshot/screenshot2.png)
 ![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Screenshot/screenshot3.png)
 ![alt text](https://github.com/nerdefierodiesserlo/GeekHome/blob/master/Screenshot/screenshot4.png)
