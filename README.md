@@ -1,4 +1,4 @@
-# My Geek Home
+# My Home
 
 That's my Smart Home!!!
 
