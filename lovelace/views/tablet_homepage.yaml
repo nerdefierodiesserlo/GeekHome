@@ -1,0 +1,975 @@
+####################################################
+#                                                  #
+#                  HOMEPAGE                        #
+#                                                  #
+####################################################
+  title: Homepage
+  panel: true
+  path: mobile_homepage
+  icon: mdi:home-assistant
+  cards:
+    - type: custom:layout-card
+      layout: vertical
+      column_width: 460px
+      #max_columns: 3
+      cards:
+        # DISPOSITIVI CONNESSI
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 10px;
+                }
+              entity: switch.computer_lan_wol
+              show_state: false
+              show_name: true
+              state:
+                - operator: template
+                  value:  >
+                    [[[
+                      return states['switch.computer_lan_wol'].state == 'on'
+                    ]]] 
+                  icon: mdi:ethernet
+                  name: PC LAN
+                - operator: template
+                  value:  >
+                    [[[
+                      return states['switch.computer_wifi_wol'].state == 'on'
+                    ]]]
+                  icon: mdi:wifi
+                  name: PC WIFI
+                - operator: template
+                  value:  >
+                    [[[
+                      return (states['switch.computer_wifi_wol'].state == 'off' && states['switch.computer_lan_wol'].state == 'off')
+                    ]]]
+                  icon: mdi:laptop-off
+                  name: PC
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.retropie_template
+              show_state: false
+              show_name: true
+              name: Retropie
+              icon: mdi:gamepad-variant
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.pi_zero_wol
+              name: Pi Zero
+              icon: mdi:raspberry-pi
+              show_state: false
+              show_name: true
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.esp32_wol
+              name: Esp32
+              icon: mdi:chip
+              show_state: false
+              show_name: true
+        # COMANDI
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 10px;
+                }
+              entity: script.reboot_home_assistant_script
+              show_state: false
+              show_name: true
+              name: Reboot HA
+              icon: mdi:autorenew
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente riavviare HA?
+                service: script.reboot_home_assistant_script
+              state:
+                - value: 'on'
+                  spin: true
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: script.poweroff_home_assistant_script
+              show_state: false
+              show_name: true
+              name: Stop HA
+              icon: mdi:power
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente stoppare HA?
+                service: script.poweroff_home_assistant_script
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: script.reboot_pi4_script
+              name: Reboot Pi4
+              icon: mdi:autorenew
+              tap_action:
+                action: call-service
+                confirmation:
+                  text: Vuoi veramente riavviare il raspberry?
+              show_state: false
+              show_name: true
+              state:
+                - value: 'on'
+                  spin: true
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: automation.spegnimento_programmato
+              name: Nas Timer
+              show_state: false
+              show_name: true
+              state:
+                - value: 'on'
+                  icon: mdi:timer-outline
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+                - value: 'off'
+                  icon: mdi:timer-off-outline
+        # PRESE
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.server_template
+              show_state: false
+              show_name: true
+              name: Server
+              state:
+                - value: 'on'
+                  icon: mdi:server
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+                - value: 'off'
+                  icon: mdi:server-off
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.xiaomi_wifi
+              show_state: false
+              show_name: true
+              state:
+                - value: 'on'
+                  icon: mdi:fan
+                  spin: true
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+                - value: 'off'
+                  icon: mdi:fan-off
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.seconda_presa
+              show_state: false
+              show_name: true
+              name: Broadlink
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: switch.outlet_b44d
+              show_state: false
+              show_name: true
+              name: Presa server
+              tap_action:
+                action: toggle
+                confirmation:
+                  text: >
+                    [[[
+                      if (states['switch.outlet_b44d'].state ==  'on')
+                        return "Vuoi veramente togliere la corrente al server? In questo modo toglierai la corrente senza rimuovere correttamente gli Hard Disk. Per spegnere correttamente il server devi spegnere l'altro interruttore chiamato server";
+                      else
+                        return "Vuoi veramente accendere la presa? In questo modo darai semplicemente corrente agli Hard Disk che potrebbero non venire montati. Per accendere correttamente il server devi accendere l'altro interruttore chiamato server";
+                    ]]]
+        # LUCI
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: light.luce_camera
+              show_state: false
+              show_name: true
+              name: Camera
+              state:
+                - value: 'on'
+                  icon: mdi:lightbulb-on
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: light.luce_scale
+              show_state: false
+              show_name: true
+              name: Scale
+              state:
+                - value: 'on'
+                  icon: mdi:lightbulb-on
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: light.luce_bagno
+              show_state: false
+              show_name: true
+              name: Bagno
+              state:
+                - value: 'on'
+                  icon: mdi:lightbulb-on
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: light.comodino
+              show_state: false
+              show_name: true
+              icon: mdi:desk-lamp
+              hold_action:
+                action: more-info
+              state:
+                - value: 'on'
+                  color: var(--button-card-light-color)
+                  styles:
+                    name:
+                      - color: var(--button-card-light-color)
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--button-card-light-color)
+        # INFO RASPBERRY
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.memory_use_percent
+              show_state: true
+              show_name: true
+              name: Ram
+              state:
+                - value: 40
+                  operator: '<='
+                  color: green
+                - value: 70
+                  operator: '<='
+                  color: orange
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px orange
+                - value: 70
+                  operator: '>'
+                  color: red
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px red
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.processor_use
+              show_state: true
+              show_name: true
+              name: CPU
+              state:
+                - value: 30
+                  operator: '<='
+                  color: green
+                - value: 60
+                  operator: '<='
+                  color: orange
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px orange
+                - value: 60
+                  operator: '>'
+                  color: red
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px red
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.cpu_temperature
+              show_state: true
+              show_name: true
+              name: Pi4
+              state:
+                - value: 55
+                  operator: '<='
+                  color: green
+                - value: 65
+                  operator: '<='
+                  color: orange
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px orange
+                - value: 65
+                  operator: '>'
+                  color: red
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px red
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: climate.controllo_temperatura_rpi
+              name: Pi4 Fan
+              show_state: false
+              show_label: true
+              show_name: true
+              label: >
+                    [[[
+                      if (states['climate.controllo_temperatura_rpi'].attributes.hvac_action == 'cooling')
+                        return "Cool";
+                      else
+                        return "Off";
+                    ]]] 
+              state:
+                - operator: template
+                  value:  >
+                    [[[
+                      return states['climate.controllo_temperatura_rpi'].attributes.hvac_action == 'cooling'
+                    ]]] 
+                  styles:
+                    card:
+                      - box-shadow: 0px 0px 9px 3px var(--paper-item-icon-active-color)
+                    label:
+                      - color: var(--paper-item-icon-active-color)
+                    icon:
+                      - color: var(--paper-item-icon-active-color)
+                    name:
+                      - color: var(--paper-item-icon-active-color)
+                  icon: mdi:fan
+                  spin: true
+                - operator: template
+                  value:  >
+                    [[[
+                      return states['climate.controllo_temperatura_rpi'].attributes.hvac_action == 'idle'
+                    ]]]
+                  icon: mdi:fan-off
+        # PLEX E ALTRO
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.plex_state
+              show_state: true
+              show_name: true
+              name: Plex state
+              state:
+                - value: Libero
+                  color: green
+                - value: Occupato
+                  color: red
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.plex_raspberrypi
+              show_units: false
+              show_state: true
+              show_name: true
+              name: Plex user
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: binary_sensor.updater
+              show_state: false
+              color_type: icon
+              label: >
+                    [[[
+                      if (states['binary_sensor.updater'].state == 'on')
+                        return states['binary_sensor.updater'].attributes.newest_version;
+                      else
+                        return states['sensor.current_version'].state;
+                    ]]] 
+              show_label: true
+              show_name: true
+              name: >
+                    [[[
+                      if (states['binary_sensor.updater'].state == 'on')
+                        return "New version";
+                      else
+                        return "Version";
+                    ]]] 
+              state:
+                - value: 'on'
+                  operator: '=='
+                  color: green
+                  styles:
+                    card:
+                      - animation: blink 4s ease infinite
+            - type: "custom:button-card"
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: sensor.hacs
+              show_state: true
+              show_name: true
+              name: Update
+              color_type: icon
+              show_units: false
+              state:
+                - value: 0
+                  operator: '!='
+                  color: green
+                  styles:
+                    card:
+                      - animation: blink 4s ease infinite
+        - break
+        # MEDIA PLAYER
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: custom:swipe-card
+            start_card: 1
+            parameters:
+              effect: 'coverflow'
+              grabCursor: true
+              centeredSlides: true
+              slidesPerView: 'auto'
+              pagination:
+                type: 'bullets'
+            cards:
+            - type: media-control
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: media_player.fire_tv_stick
+              name: Fire TV
+            - type: media-control
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: media_player.plex_plex_for_android_tv_aftt
+              name: Plex TV
+            - type: media-control
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entity: media_player.echo_dot_di_umberto
+        # TELECOMANDO
+        - type: custom:mod-card
+          style: |
+            ha-card {
+              margin-bottom: 15px;
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+          card:
+            type: custom:swipe-card
+            cards:
+            - type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  entity: switch.esp32_samsung_power
+                  icon: mdi:power
+                  label: 'On / Off'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  entity: switch.esp32_samsung_hdmi
+                  icon: mdi:import
+                  label: 'Source'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  entity: switch.esp32_samsung_tv
+                  icon: mdi:television-box
+                  label: 'TV'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  entity: switch.esp32_samsung_hdmi1
+                  icon: mdi:video-input-hdmi
+                  label: 'HDMI 1'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  custom_fields:
+                    hdmi_number: >
+                      [[[
+                        return `<ha-icon
+                          icon="mdi:numeric-1-box"
+                          style="width: 75%; height: 75%;">
+                          </ha-icon>`
+                      ]]]
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  styles:
+                    custom_fields:
+                      hdmi_number:
+                        - show_label: false
+                        - show_name: false
+                        - border-radius: 50%
+                        - position: absolute
+                        - left: 60%
+                        - top: 5%
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  entity: switch.esp32_samsung_hdmi2
+                  icon: mdi:video-input-hdmi
+                  label: 'HDMI 2'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  custom_fields:
+                    hdmi_number: >
+                      [[[
+                        return `<ha-icon
+                          icon="mdi:numeric-2-box"
+                          style="width: 75%; height: 75%;">
+                          </ha-icon>`
+                      ]]]
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  styles:
+                    custom_fields:
+                      hdmi_number:
+                        - show_label: false
+                        - show_name: false
+                        - border-radius: 50%
+                        - position: absolute
+                        - left: 60%
+                        - top: 5% 
+            - type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  icon: mdi:amazon
+                  label: 'Fire TV'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  tap_action:
+                    action: call-service
+                    service: media_player.turn_on
+                    service_data:
+                      entity_id: media_player.fire_tv_stick
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  icon: mdi:home-circle-outline
+                  label: 'Home'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  tap_action:
+                    action: call-service
+                    service: script.test_fire
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  icon: mdi:youtube
+                  label: 'Youtube'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  tap_action:
+                    action: call-service
+                    service: script.start_youtube
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  icon: mdi:plex
+                  label: 'Plex'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  tap_action:
+                    action: call-service
+                    service: script.start_plex
+                - type: "custom:button-card"
+                  style: |
+                    ha-card {
+                      background: rgba(0,0,0,0.);
+                      border-radius: 15px;
+                    }
+                  icon: mdi:kodi
+                  label: 'Kodi'
+                  show_label: true
+                  show_state: false
+                  show_name: false
+                  state:
+                    - value: 'on'
+                      color: var(--primary-color);
+                    - value: 'off'
+                      color: var(--primary-color);
+                  tap_action:
+                    action: call-service
+                    service: script.start_kodi
+        #- break
+        # TEMPERATURE
+        - type: custom:swipe-card
+          card_width: '80%'
+          start_card: 1
+          parameters:
+            effect: 'coverflow'
+            grabCursor: true
+            centeredSlides: true
+            slidesPerView: 'auto'
+            pagination:
+              type: 'bullets'
+          cards:
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.dark_sky_temperature
+              line_color: '#e74c3c'
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.temperature_and_humidity_sensor_dc21_temperature
+              line_color: '#e74c3c'
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.temperature_and_humidity_sensor_6d4d_temperature
+              line_color: '#e74c3c'
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - entity: sensor.xiaomi_temperatura_mansarda
+                  name: Temperatura mansarda
+              line_color: '#e74c3c'
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - entity: sensor.xiaomi_temperatura_camera
+                  name: Temperatura camera
+              line_color: '#e74c3c'
+              line_width: 8
+              font_size: 75
+        - type: custom:swipe-card
+          card_width: '80%'
+          start_card: 1
+          parameters:
+            effect: 'coverflow'
+            grabCursor: true
+            centeredSlides: true
+            slidesPerView: 'auto'
+            pagination:
+              type: 'bullets'
+          cards:
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.dark_sky_humidity
+              line_color: blue
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.temperature_and_humidity_sensor_dc21_humidity
+              line_color: blue
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - sensor.temperature_and_humidity_sensor_6d4d_humidity
+              line_color: blue
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - entity: sensor.xiaomi_umidita_mansarda
+                  name: Umidità mansarda
+              line_color: blue
+              line_width: 8
+              font_size: 75
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: rgba(0,0,0,0.);
+                  border-radius: 15px;
+                }
+              entities:
+                - entity: sensor.xiaomi_temperatura_camera
+                  name: Umidità camera
+              line_color: blue
+              line_width: 8
+              font_size: 75
+####################################################
+#                                                  #
+#            END OF CONFIGURATION FILE             #
+#                                                  #
+####################################################
