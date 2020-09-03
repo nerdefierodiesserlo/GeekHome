@@ -6,3 +6,4 @@
     <td><img src="IR-transmitter.jpg"></td>
   </tr>
  </table>
+![alt text](schema%20generico.jpg)
