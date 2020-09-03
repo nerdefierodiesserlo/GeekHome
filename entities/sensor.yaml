@@ -1,4 +1,6 @@
 #sensor:
+
+#sensori data, ora, fuso orario
   - platform: time_date
     display_options:
       - 'time'
@@ -8,6 +10,8 @@
       - 'time_date'
       - 'time_utc'
       - 'beat'
+      
+#sensori temperatura, ram, cpu
   - platform: command_line
     name: CPU Temperature
     command: "cat /sys/class/thermal/thermal_zone0/temp"
@@ -22,20 +26,22 @@
       - type: memory_free
       - type: memory_use
       - type: processor_use
+  - platform: version
+  
+#sensori monitoraggio plex
+  - platform: plex_recently_added
+    name: Plex Recently Added Movies
+    token: !secret plex_token
+    host: 192.168.1.114
+    port: 32400
+    max: 10
+    section_types:
+      - movie  
   - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/smb/smb_locked_file'
-    name: smb_locked_file
-    scan_interval: 3600
-  - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/pizero/pizero_temp'
-    name: pizero_temp
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(1) }}'
-    scan_interval: 3600
-  - platform: rest
-    resource: 'http://192.168.1.14:1234/hassio/smb/get_smb_status'
-    name: smb_status_rest
-    scan_interval: 3600
+    resource: 'http://192.168.1.114:1234/plex/get_plex_status'
+    name: Plex service status
+    
+#sensori rest controllo hard disk server
   - platform: rest
     resource: 'http://192.168.1.14:1234/hassio/nas/statistics/get_wd_stats'
     name: wd_rest
@@ -84,7 +90,8 @@
       - used
     scan_interval: 43200
     value_template: '{{ value_json.name }}'
-################################################################################
+
+#sensori meteo darksky
   - platform: darksky
     api_key: !secret dark_sky_api
     latitude: !secret latitude_home
@@ -105,8 +112,12 @@
       - temperature_low
       - wind_bearing
       - wind_speed
+      
+#sensori template
   - platform: template
     sensors:
+    
+    #sensori termostati
       climate_primo_piano_state:
         friendly_name: 'Stato termostato primo piano'
         value_template: "{{ state_attr('climate.termostato_primo_piano', 'hvac_action') }}"
@@ -122,12 +133,16 @@
       thermostat_primo_piano_timer:
         friendly_name: 'Timer'
         value_template: "{{ states('input_number.thermostat_primo_piano_hours') | int  }}:{{ states('input_number.thermostat_primo_piano_minutes') | int  }}:00"
+   
+   #sensore last alexa
       last_alexa:
         entity_id:
           - media_player.echo_dot_di_patrizia
           - media_player.echo_dot_di_umberto
         value_template: >
           {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+
+   #sensori singole info hard disk server (prese da)
 #################################################################################################
       wd_usage_percent:
         friendly_name: "WD usage percent"
@@ -251,4 +266,46 @@
             mdi:harddisk-remove
           {% else %}
             mdi:harddisk-plus
+          {% endif %}
+          
+   #sensore plex state (libero, occupato, inattivo)
+     plex_state:
+        friendly_name: "Stato Plex"
+        entity_id: 
+          - sensor.plex_raspberrypi
+          - sensor.plex_service_status
+        icon_template: mdi:plex
+        value_template: >
+          {% if is_state('sensor.plex_service_status', 'inactive') %}
+            Inattivo
+          {% elif is_state('sensor.plex_raspberrypi', '0') %}
+            Libero
+          {% else %}
+            Occupato
+          {% endif %}
+          
+   #sensori bluetooth tracker
+      chiavi_umberto:
+        friendly_name: "Chiavi Umberto"
+        value_template: >
+          {% if is_state('binary_sensor.tracker_chiavi', 'on') %}
+            Casa
+          {% else %}
+            Fuori casa
+          {% endif %}
+      portafoglio_umberto:
+        friendly_name: "Portafoglio Umberto"
+        value_template: >
+          {% if is_state('binary_sensor.tracker_portafoglio', 'on') %}
+            Casa
+          {% else %}
+            Fuori casa
+          {% endif %}
+      miband4:
+        friendly_name: "Mi band 4"
+        value_template: >
+          {% if is_state('binary_sensor.miband4', 'on') %}
+            Casa
+          {% else %}
+            Fuori casa
           {% endif %}
