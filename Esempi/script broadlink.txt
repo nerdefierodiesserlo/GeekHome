@@ -1,0 +1,61 @@
+nome_script_uno:
+  alias: 'Nome script uno completo'
+  sequence:
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        device: Amplificatore
+        command: volume up
+        num_repeats: 5
+        
+        
+nome_script_due:
+  alias: 'Nome script due completo'
+  sequence:
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        device: Amplificatore
+        command: power
+    - delay: 00:00:05
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        device: Amplificatore
+        command: volume up
+        num_repeats: 5
+
+
+nome_script_tre:
+  alias: 'Nome script tre completo'
+  sequence:
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        device: Amplificatore
+        command:
+          - comando1
+          - comando2
+
+
+nome_script_quattro:
+  alias: 'Nome script quattro completo'
+  sequence:
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        command: b64:JgBGAJKVETkRORE5ERQQFRAVERQQFRE5ETkROREUERQRFBEUERQRORAVERUPOxAVDzsQOhA6EBUQOhA6EBUQOhAVEBUPFhAADQUAAA==
+        num_repeats: 5
+
+
+
+nome_script_cinque:
+  alias: 'Nome script cinque completo'
+  sequence:
+    - service: remote.send_command
+      data:
+        entity_id: remote.rm_mini_3_remote
+        device: Amplificatore
+        command:
+          - comando1
+          - b64:JgBGAJKVETkRORE5ERQQFRAVERQQFRE5ETkROREUERQRFBEUERQRORAVERUPOxAVDzsQOhA6EBUQOhA6EBUQOhAVEBUPFhAADQUAAA==
