@@ -9,7 +9,7 @@ selettore1_script:
           script.script_b
         {% endif %}
 
-# versione 2: l'ora viene salvata in una variabile (current_time) e la condizione di if
+# versione 2 (aggiornata): l'ora viene salvata in una variabile (current_time) e la condizione di if
 # viene controllata su quella. Più interessante perchè puoi mettere come in questo caso anche un doppio controllo
 # (maggiore e minore). Ovviamente puoi anche metterne uno solo {% if current_time  < '12:00' %}
 selettore2_script:
@@ -17,7 +17,7 @@ selettore2_script:
   sequence:
     - service_template: >
         {% set current_time = states('sensor.time') %}
-        {% if '08:01' < current_time  < '12:00' %}
+        {% if current_time > '20:01' and current_time < '24:00' %}
           script.script_a
         {% else %}
           script.script_b
