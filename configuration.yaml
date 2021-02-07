@@ -10,6 +10,7 @@ zeroconf:
 
 lovelace:
   mode: yaml
+
 ####################################################
 #                                                  #
 #                  RESOURCES                       #
@@ -21,8 +22,6 @@ lovelace:
     - url: /hacsfiles/gauge-card/gauge-card.js
       type: js
     - url: /hacsfiles/lovelace-layout-card/layout-card.js
-      type: module
-    - url: /hacsfiles/lovelace-battery-entity/battery-entity.js
       type: module
     - url: /hacsfiles/lovelace-card-tools/card-tools.js
       type: module
@@ -44,16 +43,19 @@ lovelace:
       type: module
     - url: 'https://fonts.googleapis.com/css?family=Raleway'
       type: css
+    - url: /local/mycss.css?v=0.1
+      type: css
     - url: /hacsfiles/swipe-card/swipe-card.js
       type: module
     - url: /hacsfiles/upcoming-media-card/upcoming-media-card.js
- 
+      type: module
+      
   dashboards:
     lovelace-mobile-dashboard:
       mode: yaml
       title: Mobile
       filename: mobile-dashboard.yaml
-      icon: mdi:tablet-cellphone
+      icon: mdi:cellphone-android
       show_in_sidebar: true
       require_admin: true
     lovelace-tablet-dashboard:
@@ -62,14 +64,22 @@ lovelace:
       filename: tablet-dashboard.yaml
       icon: mdi:tablet-cellphone
       show_in_sidebar: true
-      require_admin: true      type: module
+      require_admin: true
+    lovelace-echo-show-dashboard:
+      mode: yaml
+      title: Echo
+      filename: echo-show-dashboard.yaml
+      icon: mdi:amazon-alexa
+      show_in_sidebar: true
+      require_admin: true
+      
+################################################################################
 
 frontend:
   themes: !include_dir_merge_named themes
-  javascript_version: auto
   
 ###############################   DEFAULT   ####################################
-
+  
 homeassistant:
   packages: !include_dir_named packages
   whitelist_external_dirs:
@@ -80,9 +90,15 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Rome
   auth_providers:
+    - type: homeassistant
     - type: legacy_api_password
       api_password: !secret http_password
   name: Casa
+  external_url: !secret http_base_url_ovh
+  internal_url: "https://192.168.1.114:8123"
+
+media_source:
+  
 recorder:
   #purge_interval: 1
   purge_keep_days: 3
@@ -103,18 +119,18 @@ recorder:
 ###############################   HTTP   #######################################
 
 http:
-  base_url: !secret http_base_url
+#   base_url: !secret http_base_url_ovh
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
   ip_ban_enabled: False
   login_attempts_threshold: 5
+
   
-      
 ################################   IFTTT & REST  #####################################
 
-ifttt:
-  key: !secret ifttt_key
-  
+# ifttt:
+#   key: !secret ifttt_key
+   
 rest_command:
   restart_plex:
     url: 'http://192.168.1.114:1234/plex/restart'
@@ -128,6 +144,10 @@ rest_command:
     url: !secret plex_update_tvshows_library_url
   get_image_plex:
     url: 'http://192.168.1.114:1234/plex/get_image'
+  play_media:
+    url: 'http://192.168.1.114:1234/plex/play_media'
+  play_episode:
+    url: 'http://192.168.1.114:1234/plex/play_episode'
   reboot_retropie:
     url: 'http://192.168.1.118:1234/retropie/reboot'
   poweroff_retropie:
@@ -160,6 +180,7 @@ rest_command:
     url: 'http://192.168.1.114:1234/hassio/nas/mount_hitachi'
   umount_hitachi:
     url: 'http://192.168.1.114:1234/hassio/nas/umount_hitachi'
+
 #########################   TELEGRAM   #########################################
 
 telegram_bot:
@@ -173,7 +194,7 @@ notify:
     chat_id: !secret telegram_chat_id_u
   - platform: alexa_media
     name: alexa_media
-      
+
 ################################################################################
 
 automation old: !include_dir_merge_list automations
@@ -189,7 +210,36 @@ sensor: !include /config/entities/sensor.yaml
 switch: !include /config/entities/switch.yaml
 timer: !include /config/entities/timer.yaml
 yeelight: !include /config/entities/yeelight.yaml
+
+input_text:
+  media_to_play:
+    name: Media da riprodurre
+    initial: some media
+  place_where_play:
+    name: Luogo dove riprodurre
+    initial: some place
+  episode_to_play:
+    name: Episodio da riprodurre
+    initial: some episode
+  season_to_play:
+    name: Stagione da riprodurre
+    initial: some season
+  show_to_play:
+    name: Show da riprodurre
+    initial: some show
+  text1:
+    name: Testo annuncio
+    initial: Some Text
     
+input_select:
+  echo_list:
+    name: Lista Echo
+    options:
+      - Umberto
+      - Mamma
+      - Salotto
+    initial: Umberto
+    icon: mdi:amazon-alexa
 media_player:
   - platform: androidtv
     name: Fire TV Stick
@@ -197,8 +247,13 @@ media_player:
     host: 192.168.1.116
     adb_server_ip: 127.0.0.1
     adb_server_port: 5037
-    
-#############################   SHELLY   ########################################
+#########################   DISCOVERY   ########################################
+
+# discovery:
+#   ignore:
+#     - yeelight
+#     - xiaomi_gw
+
 light:
   - platform: mqtt
     name: "Luce bagno"
@@ -227,6 +282,29 @@ light:
     payload_off: "off"
     optimistic: false
     retain: false
-    
+
 api:
 alexa: !include /config/entities/alexa.yaml
+
+sensor places_umberto:
+  - platform: places
+    name: Redmi Umberto
+    devicetracker_id: device_tracker.redmi_5_plus
+    options: zone,place
+    map_provider: google
+    map_zoom: 19
+    home_zone: zone.home
+    api_key: !secret email
+
+proximity:
+  home:
+    devices:
+      - device_tracker.redmi_5_plus
+    tolerance: 50
+    unit_of_measurement: km
+  lavoro:
+    zone: Lavoro
+    devices:
+      - device_tracker.redmi_5_plus
+    tolerance: 10
+    unit_of_measurement: m
