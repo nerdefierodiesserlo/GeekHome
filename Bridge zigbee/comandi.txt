@@ -1,0 +1,36 @@
+Flash antenna:
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install wiringpi
+sudo apt-get install git
+git clone https://github.com/jmichault/flash_cc2531.git
+cd flash_cc2531
+./cc_chipid
+###################
+risposta: ID = a524.
+###################
+A seconda della vostra antenna:
+wget https://github.com/Koenkk/Z-Stack-firmware/tree/master/coordinator/Z-Stack_Home_1.2/bin/default/CC2530_CC2591_DEFAULT_20201127.zip
+unzip CC2530_CC2591_DEFAULT_20201127.zip
+
+------------------------------------------------------
+Oppure se desse errore durante l'unzip
+git clone https://github.com/Koenkk/Z-Stack-firmware
+cd Z-Stack-firmware
+cd coordinator
+cd Z-Stack_Home_1.2
+cd bin
+cd default
+cp CC2530_CC2591_DEFAULT_20201127.zip /home/pi/flash_cc2531
+unzip CC2530_CC2591_DEFAULT_20201127.zip
+------------------------------------------------------
+
+./cc_erase
+./cc_write CC2530ZNP-Prod.hex
+###################
+risposta dopo qualche minuto:
+writing page 128/128.
+verifying page 128/128.
+ flash OK.
+###################
